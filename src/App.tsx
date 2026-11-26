@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Activity, AlertTriangle, Bookmark, CalendarDays, Check, CheckCircle2,
-  Clock3, Copy, Heart, Menu, MessageSquareText, Monitor, Moon, Radio,
+  ChevronLeft, ChevronRight, Copy, Heart, Menu, MessageSquareText, Monitor, Moon, Radio,
   RefreshCw, Repeat2, Search, ShieldCheck, Sparkles, Sun, TrendingUp,
   Users, X, Zap
 } from "lucide-react";
@@ -70,6 +70,12 @@ const PROVIDERS: Record<Provider, { name: string; product: string; color: string
 
 // Brand icons from Lobe Icons (@lobehub/icons-static-svg, MIT): OpenAI / Gemini / Claude.
 // Inline SVG paths with fill=currentColor so they follow the provider color in both themes.
+const PROVIDER_BORDER: Record<Provider, string> = {
+  openai: "border-l-emerald-500",
+  google: "border-l-blue-500",
+  anthropic: "border-l-orange-500",
+};
+
 const PROVIDER_ICON_PATHS: Record<Provider, string> = {
   openai: "M9.205 8.658v-2.26c0-.19.072-.333.238-.428l4.543-2.616c.619-.357 1.356-.523 2.117-.523 2.854 0 4.662 2.212 4.662 4.566 0 .167 0 .357-.024.547l-4.71-2.759a.797.797 0 00-.856 0l-5.97 3.473zm10.609 8.8V12.06c0-.333-.143-.57-.429-.737l-5.97-3.473 1.95-1.118a.433.433 0 01.476 0l4.543 2.617c1.309.76 2.189 2.378 2.189 3.948 0 1.808-1.07 3.473-2.76 4.163zM7.802 12.703l-1.95-1.142c-.167-.095-.239-.238-.239-.428V5.899c0-2.545 1.95-4.472 4.591-4.472 1 0 1.927.333 2.712.928L8.23 5.067c-.285.166-.428.404-.428.737v6.898zM12 15.128l-2.795-1.57v-3.33L12 8.658l2.795 1.57v3.33L12 15.128zm1.796 7.23c-1 0-1.927-.332-2.712-.927l4.686-2.712c.285-.166.428-.404.428-.737v-6.898l1.974 1.142c.167.095.238.238.238.428v5.233c0 2.545-1.974 4.472-4.614 4.472zm-5.637-5.303l-4.544-2.617c-1.308-.761-2.188-2.378-2.188-3.948A4.482 4.482 0 014.21 6.327v5.423c0 .333.143.571.428.738l5.947 3.449-1.95 1.118a.432.432 0 01-.476 0zm-.262 3.9c-2.688 0-4.662-2.021-4.662-4.519 0-.19.024-.38.047-.57l4.686 2.71c.286.167.571.167.856 0l5.97-3.448v2.26c0 .19-.07.333-.237.428l-4.543 2.616c-.619.357-1.356.523-2.117.523zm5.899 2.83a5.947 5.947 0 005.827-4.756C22.287 18.339 24 15.84 24 13.296c0-1.665-.713-3.282-1.998-4.448.119-.5.19-.999.19-1.498 0-3.401-2.759-5.947-5.946-5.947-.642 0-1.26.095-1.88.31A5.962 5.962 0 0010.205 0a5.947 5.947 0 00-5.827 4.757C1.713 5.447 0 7.945 0 10.49c0 1.666.713 3.283 1.998 4.448-.119.5-.19 1-.19 1.499 0 3.401 2.759 5.946 5.946 5.946.642 0 1.26-.095 1.88-.309a5.96 5.96 0 004.162 1.713z",
   google: "M20.616 10.835a14.147 14.147 0 01-4.45-3.001 14.111 14.111 0 01-3.678-6.452.503.503 0 00-.975 0 14.134 14.134 0 01-3.679 6.452 14.155 14.155 0 01-4.45 3.001c-.65.28-1.318.505-2.002.678a.502.502 0 000 .975c.684.172 1.35.397 2.002.677a14.147 14.147 0 014.45 3.001 14.112 14.112 0 013.679 6.453.502.502 0 00.975 0c.172-.685.397-1.351.677-2.003a14.145 14.145 0 013.001-4.45 14.113 14.113 0 016.453-3.678.503.503 0 000-.975 13.245 13.245 0 01-2.003-.678z",
@@ -155,10 +161,10 @@ function Avatar({ name, provider, avatarUrl, small = false }: { name: string; pr
   );
 }
 
-function ProviderMark({ provider }: { provider: Provider }) {
+function ProviderMark({ provider, small = false }: { provider: Provider; small?: boolean }) {
   const item = PROVIDERS[provider];
   return (
-    <svg viewBox="0 0 24 24" role="img" aria-label={item.name} className={`h-5 w-5 shrink-0 ${item.color}`} fill="currentColor" fillRule="evenodd">
+    <svg viewBox="0 0 24 24" role="img" aria-label={item.name} className={`${small ? "h-3.5 w-3.5" : "h-5 w-5"} shrink-0 ${item.color}`} fill="currentColor" fillRule="evenodd">
       <path d={PROVIDER_ICON_PATHS[provider]} />
     </svg>
   );
@@ -236,7 +242,7 @@ function PostCard({ post, onAction, onSelectAuthor, onToast }: {
   };
 
   return (
-    <article className="border-b border-[var(--line)] px-4 py-4 transition hover:bg-[var(--hover)]">
+    <article className={`border-b border-[var(--line)] px-4 py-4 transition hover:bg-[var(--hover)] ${post.category === "reset" ? `border-l-[3px] ${PROVIDER_BORDER[post.provider]}` : ""}`}>
       {post.pinned && <div className="mb-2 ml-[52px] flex items-center gap-1.5 text-[11px] font-semibold text-amber-500"><Zap size={14} />最新重置动态</div>}
       <div className="flex gap-3">
         <button onClick={() => onSelectAuthor(post.handle)} aria-label={`筛选 ${post.author}`} className="h-fit rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -395,7 +401,7 @@ export default function ResetRadar() {
               <SidebarLink active={activeNav === "feed"} icon={Radio} label="实时监测流" count={alertCount} onClick={() => selectNav("feed")} />
               <SidebarLink active={activeNav === "people"} icon={Users} label="关键人物雷达" count={PEOPLE.length} onClick={() => selectNav("people")} />
               <SidebarLink active={activeNav === "probability"} icon={TrendingUp} label="24h 重置概率" onClick={() => selectNav("probability")} />
-              <SidebarLink active={activeNav === "history"} icon={CalendarDays} label="重置历史时间线" onClick={() => selectNav("history")} />
+              <SidebarLink active={activeNav === "history"} icon={CalendarDays} label="重置日历" onClick={() => selectNav("history")} />
               <SidebarLink active={activeNav === "bookmarks"} icon={Bookmark} label="已收藏情报" onClick={() => selectNav("bookmarks")} />
             </nav>
             <button onClick={refreshPosts} className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-[#1d9bf0] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#1688d0]">
@@ -435,14 +441,11 @@ export default function ResetRadar() {
             ) : null}
           </header>
 
+          {activeNav === "feed" && <OverviewCards onSelect={(p) => setProvider(p)} />}
+
           {/* Compact overview */}
           <section className="border-b border-[var(--line)] px-4 py-3">
-            <div className="grid grid-cols-3 gap-2">
-              <Metric label="追踪厂商" value="03" tone="default" />
-              <Metric label="重置事件" value={String(resetCount).padStart(2, "0")} tone="green" />
-              <Metric label="普通帖子" value={String(normalCount).padStart(2, "0")} tone="blue" />
-            </div>
-            <div className="mt-3 flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-1.5">
               {(["all", "google", "openai", "anthropic"] as const).map((key) => (
                 <button key={key} onClick={() => setProvider(key)} className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold transition ${provider === key ? "border-[#1d9bf0] bg-[#1d9bf0] text-white" : "border-[var(--line)] text-[var(--muted)] hover:bg-[var(--hover)]"}`}>
                   {key === "all" ? "全部厂商" : PROVIDERS[key].name}
@@ -498,15 +501,37 @@ export default function ResetRadar() {
 
       {/* Mobile bottom navigation */}
       <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-[var(--line)] bg-[var(--page)]/95 px-1 py-2 backdrop-blur-xl sm:hidden">
-        {([{ id: "feed" as const, Icon: Radio, label: "动态" }, { id: "people" as const, Icon: Users, label: "人物" }, { id: "probability" as const, Icon: TrendingUp, label: "概率" }, { id: "history" as const, Icon: Clock3, label: "历史" }, { id: "bookmarks" as const, Icon: Bookmark, label: "收藏" }]).map(({ id, Icon, label }) => <button key={id} onClick={() => selectNav(id)} className={`flex flex-col items-center gap-1 py-1 text-[10px] font-semibold ${activeNav === id ? "text-blue-500" : "text-[var(--muted)]"}`}><Icon size={22} /><span>{label}</span></button>)}
+        {([{ id: "feed" as const, Icon: Radio, label: "动态" }, { id: "people" as const, Icon: Users, label: "人物" }, { id: "probability" as const, Icon: TrendingUp, label: "概率" }, { id: "history" as const, Icon: CalendarDays, label: "日历" }, { id: "bookmarks" as const, Icon: Bookmark, label: "收藏" }]).map(({ id, Icon, label }) => <button key={id} onClick={() => selectNav(id)} className={`flex flex-col items-center gap-1 py-1 text-[10px] font-semibold ${activeNav === id ? "text-blue-500" : "text-[var(--muted)]"}`}><Icon size={22} /><span>{label}</span></button>)}
       </nav>
     </div>
   );
 }
 
-function Metric({ label, value, tone }: { label: string; value: string; tone: "default" | "green" | "blue" }) {
-  const color = tone === "green" ? "text-emerald-500" : tone === "blue" ? "text-blue-500" : "text-[var(--text)]";
-  return <div className="rounded-xl bg-[var(--surface-2)] px-3 py-2.5"><div className="text-[10px] text-[var(--muted)]">{label}</div><div className={`mt-1 text-xl font-black tabular-nums ${color}`}>{value}</div></div>;
+function OverviewCards({ onSelect }: { onSelect: (provider: Provider) => void }) {
+  const nextUpdate = formatBeijingTime(new Date(new Date(STATUS.updatedAt).getTime() + 12 * 3600 * 1000).toISOString());
+  return (
+    <section className="border-b border-[var(--line)] px-4 py-3">
+      <div className="mb-2.5 flex items-center justify-between gap-2">
+        <h2 className="text-sm font-extrabold">今日雷达总览 · 24h 重置概率</h2>
+        <span className="shrink-0 text-[10px] text-[var(--muted)]">更新于 {formatBeijingTime(STATUS.updatedAt)}</span>
+      </div>
+      <div className="grid grid-cols-3 gap-2">
+        {(["google", "openai", "anthropic"] as Provider[]).map((key) => {
+          const st = STATUS.providers[key];
+          return (
+            <button key={key} onClick={() => onSelect(key)} className="rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-3 text-left transition hover:bg-[var(--hover)]">
+              <span className="flex items-center gap-1.5"><ProviderMark provider={key} /><span className="truncate text-[11px] font-bold">{PROVIDERS[key].name}</span></span>
+              <span className="mt-2 block font-mono text-2xl font-black leading-none text-emerald-500">~{st.probability24h}%</span>
+              <span className="mt-2 block h-1 overflow-hidden rounded-full bg-[var(--line)]"><span className="block h-full rounded-full bg-emerald-500" style={{ width: `${st.probability24h}%` }} /></span>
+              <span className="mt-2 line-clamp-2 block text-[10px] leading-4 text-[var(--muted)]">{st.summary}</span>
+              <span className="mt-1.5 block truncate text-[9px] text-[var(--muted)]">最近重置 {st.lastResetAt.slice(5, 10)}</span>
+            </button>
+          );
+        })}
+      </div>
+      <p className="mt-2 text-[10px] leading-4 text-[var(--muted)]">概率为社区公开信息估算，不代表官方承诺。数据每 12 小时自动更新，下一次约 {nextUpdate}。</p>
+    </section>
+  );
 }
 
 function EmptyState({ title, description, onClear }: { title: string; description: string; onClear: () => void }) {
@@ -523,5 +548,76 @@ function ProbabilityView() {
 }
 
 function HistoryView() {
-  return <section className="p-4"><h2 className="text-base font-extrabold">重置历史时间线</h2><p className="mt-1 text-xs text-[var(--muted)]">所有时间统一转换为北京时间 UTC+8。</p><div className="relative mt-5 space-y-6 border-l-2 border-[var(--line)] pl-5">{HISTORY.slice().sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime()).map((event) => <div key={`${event.provider}-${event.at}`} className="relative"><span className="absolute -left-[26px] top-1 h-3 w-3 rounded-full bg-blue-500 ring-4 ring-[var(--page)]" /><div className="flex flex-wrap items-center gap-2"><span className="font-mono text-[11px] font-bold text-blue-500">{formatBeijingTime(event.at)}</span><ProviderMark provider={event.provider} /></div><h3 className="mt-1 text-sm font-bold">{event.title}</h3><p className="mt-1 text-xs leading-6 text-[var(--muted)]">{event.detail}</p></div>)}</div></section>;
+  const todayKey = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Shanghai" });
+  const [cursor, setCursor] = useState(() => { const d = new Date(); return { y: d.getFullYear(), m: d.getMonth() }; });
+  const [selected, setSelected] = useState(todayKey);
+
+  const eventsByDay = useMemo(() => {
+    const map = new Map<string, typeof HISTORY>();
+    for (const event of HISTORY) {
+      const day = event.at.slice(0, 10);
+      map.set(day, [...(map.get(day) ?? []), event]);
+    }
+    return map;
+  }, []);
+
+  const firstWeekday = (new Date(cursor.y, cursor.m, 1).getDay() + 6) % 7; // Monday-first offset
+  const daysInMonth = new Date(cursor.y, cursor.m + 1, 0).getDate();
+  const cells: (number | null)[] = [...Array(firstWeekday).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
+  const dayKey = (d: number) => `${cursor.y}-${String(cursor.m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+  const moveMonth = (delta: number) => setCursor((c) => { const t = c.m + delta; return { y: c.y + Math.floor(t / 12), m: ((t % 12) + 12) % 12 }; });
+  const selectedEvents = (eventsByDay.get(selected) ?? []).slice().sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
+  const sortedHistory = HISTORY.slice().sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
+
+  return (
+    <section className="p-4">
+      <h2 className="text-base font-extrabold">重置日历</h2>
+      <p className="mt-1 text-xs text-[var(--muted)]">格子里的厂商图标表示那家在那一天进行过额度重置，点击日期查看当天详情。所有时间统一为北京时间 UTC+8。</p>
+
+      <div className="mt-4 rounded-2xl border border-[var(--line)] p-3">
+        <div className="mb-2 flex items-center justify-between">
+          <button onClick={() => moveMonth(-1)} aria-label="上个月" className="rounded-full p-1.5 transition hover:bg-[var(--hover)]"><ChevronLeft size={18} /></button>
+          <strong className="text-sm">{cursor.y} 年 {cursor.m + 1} 月</strong>
+          <button onClick={() => moveMonth(1)} aria-label="下个月" className="rounded-full p-1.5 transition hover:bg-[var(--hover)]"><ChevronRight size={18} /></button>
+        </div>
+        <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-semibold text-[var(--muted)]">
+          {["一", "二", "三", "四", "五", "六", "日"].map((w) => <div key={w} className="py-1">{w}</div>)}
+        </div>
+        <div className="grid grid-cols-7 gap-1">
+          {cells.map((day, i) => {
+            if (day === null) return <div key={`blank-${i}`} />;
+            const key = dayKey(day);
+            const providers = [...new Set((eventsByDay.get(key) ?? []).map((e) => e.provider))];
+            const isSelected = key === selected;
+            const isToday = key === todayKey;
+            return (
+              <button key={key} onClick={() => setSelected(key)} className={`flex min-h-[52px] flex-col items-center rounded-xl px-0.5 py-1.5 transition hover:bg-[var(--hover)] ${isSelected ? "bg-blue-500/10 ring-1 ring-[#1d9bf0]" : ""}`}>
+                <span className={`text-xs font-semibold ${isToday ? "text-[#1d9bf0]" : ""}`}>{day}</span>
+                <span className="mt-1 flex h-3.5 items-center gap-0.5">{providers.map((p) => <ProviderMark key={p} provider={p} small />)}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <h3 className="text-sm font-extrabold">{selected} 的重置事件</h3>
+        {selectedEvents.length ? (
+          <div className="mt-2 space-y-2">
+            {selectedEvents.map((event) => (
+              <div key={`${event.provider}-${event.at}`} className={`rounded-2xl border border-[var(--line)] border-l-[3px] ${PROVIDER_BORDER[event.provider]} p-3`}>
+                <div className="flex items-center gap-2"><ProviderMark provider={event.provider} small /><span className="text-xs font-bold">{event.title}</span><span className="ml-auto shrink-0 font-mono text-[10px] text-[var(--muted)]">{formatBeijingTime(event.at)}</span></div>
+                <p className="mt-1.5 text-xs leading-5 text-[var(--muted)]">{event.detail}</p>
+              </div>
+            ))}
+          </div>
+        ) : <p className="mt-2 text-xs text-[var(--muted)]">这一天没有重置记录。</p>}
+      </div>
+
+      <h3 className="mt-6 text-sm font-extrabold">全部重置历史</h3>
+      <div className="relative mt-4 space-y-6 border-l-2 border-[var(--line)] pl-5">
+        {sortedHistory.map((event) => <div key={`${event.provider}-${event.at}`} className="relative"><span className="absolute -left-[26px] top-1 h-3 w-3 rounded-full bg-blue-500 ring-4 ring-[var(--page)]" /><div className="flex flex-wrap items-center gap-2"><span className="font-mono text-[11px] font-bold text-blue-500">{formatBeijingTime(event.at)}</span><ProviderMark provider={event.provider} /></div><h4 className="mt-1 text-sm font-bold">{event.title}</h4><p className="mt-1 text-xs leading-6 text-[var(--muted)]">{event.detail}</p></div>)}
+      </div>
+    </section>
+  );
 }
