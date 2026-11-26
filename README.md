@@ -37,6 +37,7 @@ npm run preview
 - 数据由 Muse 每 12 小时自动拉取一次：来源为御三家官方账号、代言人/核心成员的公开帖子（经 X 镜像站核对），以及网络上相关的重置传闻（传闻会标注为待核验）。
 - 每次拉取后，Muse 重新判断各家的 24h 重置概率与重置来源，更新 JSON 后以 Muse 的名义提交推送；推送后由既有部署流水线自动构建上线（resetradar.aikio.blog），无需人工操作。
 - 概率为基于公开信息的社区估算，不构成官方承诺；帖子均保留来源链接与核验状态。
+- 厂商图标来自 [Lobe Icons](https://github.com/lobehub/lobe-icons)（`@lobehub/icons-static-svg`，MIT），以官方 OpenAI / Gemini / Claude 品牌图形内联渲染。
 - 主题偏好保存在浏览器 localStorage。
 - 时间统一按 Asia/Shanghai（北京时间，UTC+8）显示。
 
