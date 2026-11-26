@@ -18,7 +18,7 @@
     "anthropic": {
       "probability24h": 10,
       "probabilityReason": "最近一次重置是 11月9日的 Fable 订阅时长重置，此后官方与核心成员均无新的重置暗示。",
-      "summary": "Anthropic 自 11月9日 Fable 重置后以产品发布为主，暂无新的额度重置动静。",
+      "summary": "Anthropic 自 11月9日 Fable 重置后以产品发布为主，暂无新动静。",
       "lastResetAt": "2026-11-09T12:00:00+08:00",
       "lastResetTitle": "Fable 5.2 按订阅时长发放重置"
     }

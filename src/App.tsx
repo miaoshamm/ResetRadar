@@ -161,10 +161,10 @@ function Avatar({ name, provider, avatarUrl, small = false }: { name: string; pr
   );
 }
 
-function ProviderMark({ provider, small = false }: { provider: Provider; small?: boolean }) {
+function ProviderMark({ provider, small = false, medium = false }: { provider: Provider; small?: boolean; medium?: boolean }) {
   const item = PROVIDERS[provider];
   return (
-    <svg viewBox="0 0 24 24" role="img" aria-label={item.name} className={`${small ? "h-3.5 w-3.5" : "h-5 w-5"} shrink-0 ${item.color}`} fill="currentColor" fillRule="evenodd">
+    <svg viewBox="0 0 24 24" role="img" aria-label={item.name} className={`${small ? "h-3.5 w-3.5" : medium ? "h-[18px] w-[18px]" : "h-5 w-5"} shrink-0 ${item.color}`} fill="currentColor" fillRule="evenodd">
       <path d={PROVIDER_ICON_PATHS[provider]} />
     </svg>
   );
@@ -199,7 +199,7 @@ function ResetDetails({ post }: { post: Post }) {
         <span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">RESET EVENT</span>
       </div>
       <div className="space-y-4 p-3.5">
-        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+        <div className="flex flex-wrap gap-x-10 gap-y-3">
           <TimeField label="宣布时间" value={reset.announcedAt} />
           <TimeField label="生效 / 到账时间" value={reset.effectiveAt} />
           {reset.expiresAt && <TimeField label="额度有效期至" value={reset.expiresAt} />}
@@ -209,7 +209,7 @@ function ResetDetails({ post }: { post: Post }) {
             <span className="text-xs text-[var(--muted)]">未来 24h 再次重置概率 · 社区估算</span>
             <strong className={`font-mono text-xl ${probability >= 50 ? "text-amber-500" : "text-emerald-500"}`}>~{probability}%</strong>
           </div>
-          <div className="h-1.5 overflow-hidden rounded-full bg-[var(--surface-2)]">
+          <div className="h-1.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/15">
             <div className={`h-full rounded-full ${probability >= 50 ? "bg-amber-500" : "bg-emerald-500"}`} style={{ width: `${probability}%` }} />
           </div>
           <p className="mt-2 text-xs leading-6 text-[var(--muted)]">判断依据：{reset.probabilityReason || "暂无公开判断依据"}</p>
@@ -267,13 +267,13 @@ function PostCard({ post, onAction, onSelectAuthor, onToast }: {
 
           <p className="mt-3 text-[14px] leading-7">{post.summary}</p>
           <div className="mt-3 rounded-xl border border-[var(--line)] bg-[var(--surface-2)] px-3.5 py-3">
-            <div className="text-xs leading-6 text-[var(--muted)]">{post.originalText}</div>
+            <div className="text-xs leading-6 text-[var(--text)] opacity-80">{post.originalText}</div>
             <div className="mt-2 border-t border-dashed border-[var(--line)] pt-2 text-[11px] leading-5 text-[var(--muted)]">{post.sourceNote}</div>
           </div>
 
           {post.category === "reset" && <ResetDetails post={post} />}
 
-          <div className="mt-4 flex max-w-md items-center justify-between text-xs text-[var(--muted)]">
+          <div className="mt-4 flex max-w-[380px] items-center justify-between text-xs text-[var(--muted)]">
             <button onClick={() => onAction(post.id, "reposted")} className={`inline-flex items-center gap-1.5 transition hover:text-emerald-500 ${post.reposted ? "font-bold text-emerald-500" : ""}`}><Repeat2 size={18} />{post.reposts.toLocaleString()}</button>
             <button onClick={() => onAction(post.id, "liked")} className={`inline-flex items-center gap-1.5 transition hover:text-rose-500 ${post.liked ? "font-bold text-rose-500" : ""}`}><Heart size={18} fill={post.liked ? "currentColor" : "none"} />{post.likes.toLocaleString()}</button>
             <button onClick={() => onAction(post.id, "bookmarked")} className={`inline-flex items-center gap-1.5 transition hover:text-blue-500 ${post.bookmarked ? "font-bold text-blue-500" : ""}`}><Bookmark size={18} fill={post.bookmarked ? "currentColor" : "none"} />{post.bookmarked ? "已收藏" : "收藏"}</button>
@@ -407,6 +407,17 @@ export default function ResetRadar() {
             <button onClick={refreshPosts} className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-[#1d9bf0] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#1688d0]">
               <RefreshCw size={18} className={refreshing ? "animate-spin" : ""} /><span className="hidden xl:inline">刷新数据</span>
             </button>
+            <div className="mt-6 hidden rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-3.5 xl:block">
+              <div className="mb-2 text-[11px] font-bold text-[var(--muted)]">御三家 · 24h 重置概率</div>
+              {(["google", "openai", "anthropic"] as Provider[]).map((key) => (
+                <button key={key} onClick={() => { setProvider(key); setActiveNav("feed"); }} className="flex w-full items-center gap-2 py-1.5 text-left">
+                  <ProviderMark provider={key} small />
+                  <span className="flex-1 truncate text-[11px] font-semibold">{PROVIDERS[key].name}</span>
+                  <span className="font-mono text-[11px] font-bold text-emerald-500">~{STATUS.providers[key].probability24h}%</span>
+                </button>
+              ))}
+              <p className="mt-2 border-t border-[var(--line)] pt-2 text-[10px] leading-4 text-[var(--muted)]">社区估算，点击查看该厂商动态。</p>
+            </div>
           </div>
           <div className="hidden space-y-3 xl:block">
             <div className="px-2 text-[11px] font-semibold text-[var(--muted)]">外观模式</div>
@@ -421,11 +432,11 @@ export default function ResetRadar() {
             <div className="flex items-center justify-between gap-3 px-4 py-3.5">
               <div className="min-w-0">
                 <div className="flex items-center gap-2"><h1 className="truncate text-base font-extrabold sm:text-lg">御三家 AI 额度追踪</h1><span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-extrabold tracking-wide text-emerald-600 dark:text-emerald-400"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />LIVE</span></div>
-                <p className="mt-1 font-mono text-[10px] text-[var(--muted)]">{formatBeijingTime(now.toISOString())} BJT</p>
+                <p className="mt-1 font-mono text-[10px] text-[var(--muted)]">{`${formatBeijingTime(now.toISOString())} BJT`}</p>
               </div>
               <div className="flex items-center gap-2">
                 <button onClick={() => setMode(mode === "system" ? "light" : mode === "light" ? "dark" : "system")} title={`外观：${mode === "system" ? "跟随系统" : mode === "light" ? "浅色" : "深色"}`} className="rounded-full p-2 text-[var(--muted)] transition hover:bg-[var(--hover)] hover:text-blue-500 xl:hidden">{mode === "system" ? <Monitor size={18} /> : mode === "light" ? <Sun size={18} /> : <Moon size={18} />}</button>
-                <button onClick={copyBriefing} title="复制御三家快讯" className="rounded-full p-2 text-[var(--muted)] transition hover:bg-[var(--hover)] hover:text-blue-500"><Copy size={18} /></button>
+                <button onClick={copyBriefing} title="复制御三家快讯" className="flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3 py-2 text-xs font-semibold transition hover:bg-[var(--hover)]"><Copy size={16} /><span className="hidden sm:inline">快讯</span></button>
                 <button onClick={refreshPosts} className="flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3 py-2 text-xs font-semibold transition hover:bg-[var(--hover)]"><RefreshCw size={16} className={refreshing ? "animate-spin text-blue-500" : ""} /><span className="hidden sm:inline">刷新</span></button>
               </div>
             </div>
@@ -476,12 +487,12 @@ export default function ResetRadar() {
             <div className="relative"><Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)]" /><input value={query} onChange={(event) => { setQuery(event.target.value); setActiveNav("feed"); }} placeholder="搜索重置公告、关键人物..." className="w-full rounded-full bg-[var(--surface-2)] py-3 pl-10 pr-4 text-xs outline-none focus:ring-1 focus:ring-blue-500" /></div>
             <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-4">
               <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-extrabold">御三家状态</h3><span className="text-[10px] text-[var(--muted)]">3 PROVIDERS</span></div>
-              {(Object.keys(PROVIDERS) as Provider[]).map((key) => {
+              {(["google", "openai", "anthropic"] as Provider[]).map((key) => {
                 const st = STATUS.providers[key];
                 return <button key={key} onClick={() => { setProvider(key); setActiveNav("feed"); }} className="-mx-2 flex w-full items-center gap-3 rounded-lg border-b border-[var(--line)] px-2 py-3 text-left transition last:border-0 hover:bg-[var(--hover)]">
                   <ProviderMark provider={key} />
                   <span className="min-w-0 flex-1"><span className="block text-xs font-bold">{PROVIDERS[key].product}</span><span className="mt-1 block truncate text-[10px] text-[var(--muted)]">{`最近重置 ${formatBeijingTime(st.lastResetAt)}`}</span></span>
-                  <span className="text-xs font-bold text-emerald-500">{~st.probability24h + "%"}</span>
+                  <span className="text-xs font-bold text-emerald-500">{"~" + st.probability24h + "%"}</span>
                 </button>;
               })}
               <p className="mt-2 text-[10px] leading-5 text-[var(--muted)]">概率为社区公开信息估算，不代表官方承诺。</p>
@@ -493,7 +504,6 @@ export default function ResetRadar() {
             <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-4">
               <div className="mb-3 flex items-center gap-2 text-sm font-extrabold"><ShieldCheck size={16} className="text-blue-500" />数据说明</div>
               <p className="text-[11px] leading-6 text-[var(--muted)]">所有时间统一显示为北京时间（UTC+8）。官方原帖、第三方转述和社区推测应分别标记。概率仅为社区估算，不代表官方承诺；未能打开的外链会明确标注为待核验。</p>
-              <div className="mt-4 border-t border-[var(--line)] pt-3"><div className="mb-2 text-[11px] font-bold">外观模式</div><ThemeControl mode={mode} onChange={setMode} compact /></div>
             </div>
           </div>
         </aside>
@@ -513,7 +523,7 @@ function OverviewCards({ onSelect }: { onSelect: (provider: Provider) => void })
     <section className="border-b border-[var(--line)] px-4 py-3">
       <div className="mb-2.5 flex items-center justify-between gap-2">
         <h2 className="text-sm font-extrabold">今日雷达总览 · 24h 重置概率</h2>
-        <span className="shrink-0 text-[10px] text-[var(--muted)]">更新于 {formatBeijingTime(STATUS.updatedAt)}</span>
+        <span className="shrink-0 text-[10px] text-[var(--muted)]">{`更新于 ${formatBeijingTime(STATUS.updatedAt)}`}</span>
       </div>
       <div className="grid grid-cols-3 gap-2">
         {(["google", "openai", "anthropic"] as Provider[]).map((key) => {
@@ -522,8 +532,8 @@ function OverviewCards({ onSelect }: { onSelect: (provider: Provider) => void })
             <button key={key} onClick={() => onSelect(key)} className="rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-3 text-left transition hover:bg-[var(--hover)]">
               <span className="flex items-center gap-1.5"><ProviderMark provider={key} /><span className="truncate text-[11px] font-bold">{PROVIDERS[key].name}</span></span>
               <span className="mt-2 block font-mono text-2xl font-black leading-none text-emerald-500">~{st.probability24h}%</span>
-              <span className="mt-2 block h-1 overflow-hidden rounded-full bg-[var(--line)]"><span className="block h-full rounded-full bg-emerald-500" style={{ width: `${st.probability24h}%` }} /></span>
-              <span className="mt-2 line-clamp-2 block text-[10px] leading-4 text-[var(--muted)]">{st.summary}</span>
+              <span className="mt-2 block h-1.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/15"><span className="block h-full rounded-full bg-emerald-500" style={{ width: `${st.probability24h}%` }} /></span>
+              <span className="mt-2 line-clamp-2 hidden min-h-8 text-[10px] leading-4 text-[var(--muted)] min-[420px]:block">{st.summary}</span>
               <span className="mt-1.5 block truncate text-[9px] text-[var(--muted)]">最近重置 {st.lastResetAt.slice(5, 10)}</span>
             </button>
           );
@@ -544,7 +554,7 @@ function PeopleView({ followed, onToggle, onSelect }: { followed: Record<string,
 
 function ProbabilityView() {
   const items = (["openai", "google", "anthropic"] as Provider[]).map((provider) => ({ provider, st: STATUS.providers[provider] }));
-  return <section className="space-y-3 p-4"><div><h2 className="text-base font-extrabold">未来 24h 再重置概率</h2><p className="mt-1 text-xs leading-5 text-[var(--muted)]">基于公开信息与历史节奏的社区估算，不代表官方承诺。数据更新于 {formatBeijingTime(STATUS.updatedAt)}（北京时间），由 Muse 每 12 小时拉取更新。</p></div>{items.map(({ provider, st }) => <div key={provider} className="rounded-2xl border border-[var(--line)] p-4"><div className="flex items-center gap-2"><ProviderMark provider={provider} /><strong className="flex-1 text-sm">{PROVIDERS[provider].product}</strong><strong className="font-mono text-lg text-emerald-500">~{st.probability24h}%</strong></div><div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[var(--surface-2)]"><div className="h-full rounded-full bg-emerald-500" style={{ width: `${st.probability24h}%` }} /></div><p className="mt-3 text-xs font-semibold leading-6">{st.summary}</p><p className="mt-1 text-xs leading-6 text-[var(--muted)]">判断依据：{st.probabilityReason}</p><p className="mt-1 text-[11px] leading-5 text-[var(--muted)]">最近一次重置：{st.lastResetTitle} · {formatBeijingTime(st.lastResetAt)}</p></div>)}</section>;
+  return <section className="space-y-3 p-4"><div><h2 className="text-base font-extrabold">未来 24h 再重置概率</h2><p className="mt-1 text-xs leading-5 text-[var(--muted)]">基于公开信息与历史节奏的社区估算，不代表官方承诺。{`数据更新于 ${formatBeijingTime(STATUS.updatedAt)}（北京时间），由 Muse 每 12 小时拉取更新。`}</p></div>{items.map(({ provider, st }) => <div key={provider} className="rounded-2xl border border-[var(--line)] p-4"><div className="flex items-center gap-2"><ProviderMark provider={provider} /><strong className="flex-1 text-sm">{PROVIDERS[provider].product}</strong><strong className="font-mono text-lg text-emerald-500">~{st.probability24h}%</strong></div><div className="mt-3 h-1.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/15"><div className="h-full rounded-full bg-emerald-500" style={{ width: `${st.probability24h}%` }} /></div><p className="mt-3 text-xs font-semibold leading-6">{st.summary}</p><p className="mt-1 text-xs leading-6 text-[var(--muted)]">判断依据：{st.probabilityReason}</p><p className="mt-1 text-[11px] leading-5 text-[var(--muted)]">最近一次重置：{st.lastResetTitle} · {formatBeijingTime(st.lastResetAt)}</p></div>)}</section>;
 }
 
 function HistoryView() {
@@ -576,11 +586,11 @@ function HistoryView() {
 
       <div className="mt-4 rounded-2xl border border-[var(--line)] p-3">
         <div className="mb-2 flex items-center justify-between">
-          <button onClick={() => moveMonth(-1)} aria-label="上个月" className="rounded-full p-1.5 transition hover:bg-[var(--hover)]"><ChevronLeft size={18} /></button>
+          <button onClick={() => moveMonth(-1)} aria-label="上个月" className="rounded-full border border-[var(--line)] bg-[var(--surface-2)] p-2 transition hover:bg-[var(--hover)]"><ChevronLeft size={16} /></button>
           <strong className="text-sm">{cursor.y} 年 {cursor.m + 1} 月</strong>
-          <button onClick={() => moveMonth(1)} aria-label="下个月" className="rounded-full p-1.5 transition hover:bg-[var(--hover)]"><ChevronRight size={18} /></button>
+          <button onClick={() => moveMonth(1)} aria-label="下个月" className="rounded-full border border-[var(--line)] bg-[var(--surface-2)] p-2 transition hover:bg-[var(--hover)]"><ChevronRight size={16} /></button>
         </div>
-        <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-semibold text-[var(--muted)]">
+        <div className="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-[var(--text)] opacity-70">
           {["一", "二", "三", "四", "五", "六", "日"].map((w) => <div key={w} className="py-1">{w}</div>)}
         </div>
         <div className="grid grid-cols-7 gap-1">
@@ -591,9 +601,9 @@ function HistoryView() {
             const isSelected = key === selected;
             const isToday = key === todayKey;
             return (
-              <button key={key} onClick={() => setSelected(key)} className={`flex min-h-[52px] flex-col items-center rounded-xl px-0.5 py-1.5 transition hover:bg-[var(--hover)] ${isSelected ? "bg-blue-500/10 ring-1 ring-[#1d9bf0]" : ""}`}>
-                <span className={`text-xs font-semibold ${isToday ? "text-[#1d9bf0]" : ""}`}>{day}</span>
-                <span className="mt-1 flex h-3.5 items-center gap-0.5">{providers.map((p) => <ProviderMark key={p} provider={p} small />)}</span>
+              <button key={key} onClick={() => setSelected(key)} className={`flex min-h-[60px] flex-col items-center rounded-xl px-0.5 py-1.5 transition hover:bg-[var(--hover)] ${isSelected ? "bg-blue-500/10 ring-1 ring-[#1d9bf0]" : ""}`}>
+                <span className={`text-xs font-semibold ${isToday ? "grid h-5 min-w-5 place-items-center rounded-full bg-[#1d9bf0] px-1 text-white" : ""}`}>{day}</span>
+                <span className="mt-1.5 flex h-[18px] items-center gap-1">{providers.map((p) => <ProviderMark key={p} provider={p} medium />)}</span>
               </button>
             );
           })}
@@ -611,11 +621,11 @@ function HistoryView() {
               </div>
             ))}
           </div>
-        ) : <p className="mt-2 text-xs text-[var(--muted)]">这一天没有重置记录。</p>}
+        ) : <div className="mt-2 flex flex-col items-center gap-2 rounded-2xl border border-dashed border-[var(--line)] py-6 text-center"><CalendarDays size={20} className="text-[var(--muted)]" /><p className="text-xs text-[var(--muted)]">这一天没有重置记录</p></div>}
       </div>
 
       <h3 className="mt-6 text-sm font-extrabold">全部重置历史</h3>
-      <div className="relative mt-4 space-y-6 border-l-2 border-[var(--line)] pl-5">
+      <div className="relative mt-4 space-y-5 border-l-2 border-[var(--muted)]/30 pl-5">
         {sortedHistory.map((event) => <div key={`${event.provider}-${event.at}`} className="relative"><span className="absolute -left-[26px] top-1 h-3 w-3 rounded-full bg-blue-500 ring-4 ring-[var(--page)]" /><div className="flex flex-wrap items-center gap-2"><span className="font-mono text-[11px] font-bold text-blue-500">{formatBeijingTime(event.at)}</span><ProviderMark provider={event.provider} /></div><h4 className="mt-1 text-sm font-bold">{event.title}</h4><p className="mt-1 text-xs leading-6 text-[var(--muted)]">{event.detail}</p></div>)}
       </div>
     </section>
