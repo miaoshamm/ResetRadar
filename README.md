@@ -1,6 +1,12 @@
+<p align="center">
+  <img src="public/logo.svg" alt="ResetRadar 标志" width="96" height="96" />
+</p>
+
 # ResetRadar
 
 御三家模型额度重置追踪面板的 React + TypeScript 前端示例。
+
+> 品牌标志为蓝色雷达屏：同心扫描环与右上扫描扇区象征实时监测，屏上的白、绿、黄三个光点分别代表被追踪的御三家厂商。源文件为 `public/logo.svg`，另有 `public/favicon.svg`、`public/favicon.ico` 与多尺寸 PNG 图标供浏览器标签页和移动端主屏幕使用。
 
 ## 环境要求
 
@@ -43,6 +49,11 @@ reset-radar/
 ├── vite.config.ts
 ├── tsconfig.json
 ├── tsconfig.node.json
+├── public/
+│   ├── logo.svg / logo-192.png / logo-512.png
+│   ├── favicon.svg / favicon.ico / favicon-32.png
+│   ├── apple-touch-icon.png
+│   └── site.webmanifest
 └── src/
     ├── App.tsx
     ├── main.tsx
