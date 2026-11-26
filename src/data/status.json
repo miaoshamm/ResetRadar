@@ -1,0 +1,26 @@
+{
+  "updatedAt": "2026-11-27T01:40:00+08:00",
+  "providers": {
+    "openai": {
+      "probability24h": 10,
+      "probabilityReason": "11月26日 banked reset 刚上线，又宣布因计费错误为全量用户补发一次，短期内再次重置概率低。",
+      "summary": "OpenAI 因 GPT-6.2 计费错误致歉，为 Go、Plus、Pro、Business 全量补发 banked reset 并已上线。",
+      "lastResetAt": "2026-11-26T12:00:00+08:00",
+      "lastResetTitle": "Banked Reset 补偿额度上线"
+    },
+    "google": {
+      "probability24h": 30,
+      "probabilityReason": "一周内已重置 4 次、节奏三家最密，感恩节刚全量重置，但缓存改造频繁烧额度、常触发补偿性重置。",
+      "summary": "Google 一周内第四次重置 Antigravity 的 Gemini 额度，感恩节向全量用户发放。",
+      "lastResetAt": "2026-11-26T12:00:00+08:00",
+      "lastResetTitle": "感恩节全量重置 Gemini 额度"
+    },
+    "anthropic": {
+      "probability24h": 10,
+      "probabilityReason": "最近一次重置是 11月9日的 Fable 订阅时长重置，此后官方与核心成员均无新的重置暗示。",
+      "summary": "Anthropic 自 11月9日 Fable 重置后以产品发布为主，暂无新的额度重置动静。",
+      "lastResetAt": "2026-11-09T12:00:00+08:00",
+      "lastResetTitle": "Fable 5.2 按订阅时长发放重置"
+    }
+  }
+}

@@ -31,12 +31,12 @@ npm run preview
 
 生产静态文件输出到 `dist/`，可部署到 Nginx 等静态 Web 服务器。
 
-## 当前版本说明
+## 数据说明
 
-- 当前为前端演示项目，使用内置示例数据。
-- 刷新操作不代表真实数据同步；尚未接入 OpenAI、Google、Anthropic 的官方数据接口或社交平台采集服务。
-- 示例帖子、重置时间、概率及互动数均用于界面演示，不应视为真实事件或官方数据。
-- 概率是演示用的社区估算字段，不构成官方承诺。
+- 页面数据来自 `src/data/` 下的 JSON 文件（相当于轻量数据库）：`posts.json`（帖子，只保留最近 100 条，每条带作者头像）、`people.json`（监听人物与头像）、`history.json`（重置历史）、`status.json`（御三家当前重置概率、判断依据与一句话总结）。
+- 数据由 Muse 每 12 小时自动拉取一次：来源为御三家官方账号、代言人/核心成员的公开帖子（经 X 镜像站核对），以及网络上相关的重置传闻（传闻会标注为待核验）。
+- 每次拉取后，Muse 重新判断各家的 24h 重置概率与重置来源，更新 JSON 后以 Muse 的名义提交推送；推送后由既有部署流水线自动构建上线（resetradar.aikio.blog），无需人工操作。
+- 概率为基于公开信息的社区估算，不构成官方承诺；帖子均保留来源链接与核验状态。
 - 主题偏好保存在浏览器 localStorage。
 - 时间统一按 Asia/Shanghai（北京时间，UTC+8）显示。
 
@@ -57,5 +57,10 @@ reset-radar/
 └── src/
     ├── App.tsx
     ├── main.tsx
-    └── index.css
+    ├── index.css
+    └── data/
+        ├── posts.json
+        ├── people.json
+        ├── history.json
+        └── status.json
 ```

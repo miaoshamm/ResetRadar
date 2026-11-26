@@ -1,0 +1,38 @@
+[
+  {
+    "at": "2026-11-26T12:00:00+08:00",
+    "provider": "google",
+    "title": "Gemini / Antigravity 感恩节全量重置",
+    "detail": "Varun Mohan 宣布为所有 Antigravity 用户重置 Gemini 额度，一周内第四次。"
+  },
+  {
+    "at": "2026-11-26T12:00:00+08:00",
+    "provider": "openai",
+    "title": "ChatGPT / Codex Banked Reset 上线",
+    "detail": "因 GPT-6.2 计费错误致歉，为 Go、Plus、Pro、Business 全量补发 banked reset。"
+  },
+  {
+    "at": "2026-11-24T11:00:00+08:00",
+    "provider": "openai",
+    "title": "ChatGPT Business Banked Reset",
+    "detail": "Business 团队获赠 banked reset，fast mode 免费至 2026-12-31。"
+  },
+  {
+    "at": "2026-11-23T12:00:00+08:00",
+    "provider": "google",
+    "title": "Gemini 额度随模型层级升级重置",
+    "detail": "全员重置；Pro 解锁 Carbon，Hydrogen 向全员开放。"
+  },
+  {
+    "at": "2026-11-21T12:00:00+08:00",
+    "provider": "google",
+    "title": "Gemini / Antigravity 周末重置",
+    "detail": "缓存改进使额度内可用量提升 22%，全员重置。"
+  },
+  {
+    "at": "2026-11-09T12:00:00+08:00",
+    "provider": "anthropic",
+    "title": "Claude Fable 5.2 订阅时长重置",
+    "detail": "按订阅时长发放 1-3 次 Fable 重置，2027-03-08 前可用。"
+  }
+]

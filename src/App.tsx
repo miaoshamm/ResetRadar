@@ -5,11 +5,16 @@ import {
   RefreshCw, Repeat2, Search, ShieldCheck, Sparkles, Sun, TrendingUp,
   Users, X, Zap
 } from "lucide-react";
+import postsData from "./data/posts.json";
+import peopleData from "./data/people.json";
+import historyData from "./data/history.json";
+import statusData from "./data/status.json";
 
 /**
  * ResetRadar
  * Dependencies: react, lucide-react, Tailwind CSS
- * This component is UI-only. Replace refreshPosts() with your real API call.
+ * Data comes from src/data/*.json (posts / people / history / status),
+ * refreshed every 12 hours by Muse and deployed automatically.
  */
 
 type Provider = "openai" | "google" | "anthropic";
@@ -24,6 +29,7 @@ type Post = {
   category: PostCategory;
   author: string;
   handle: string;
+  avatarUrl?: string;
   role: string;
   publishedAt: string; // ISO timestamp or YYYY-MM-DD HH:mm:ss interpreted as Beijing time by the API contract
   summary: string;
@@ -53,6 +59,7 @@ type Person = {
   provider: Provider;
   role: string;
   initials: string;
+  avatarUrl?: string;
 };
 
 const PROVIDERS: Record<Provider, { name: string; product: string; mark: string; color: string }> = {
@@ -61,124 +68,14 @@ const PROVIDERS: Record<Provider, { name: string; product: string; mark: string;
   anthropic: { name: "Anthropic", product: "Claude / Claude Code", mark: "✳", color: "text-orange-500" },
 };
 
-const PEOPLE: Person[] = [
-  { name: "Tibo", handle: "@thsottiaux", provider: "openai", role: "ChatGPT / Codex", initials: "TB" },
-  { name: "Sam Altman", handle: "@sama", provider: "openai", role: "OpenAI CEO", initials: "SA" },
-  { name: "Greg Brockman", handle: "@gdb", provider: "openai", role: "OpenAI 联合创始人", initials: "GB" },
-  { name: "Varun Mohan", handle: "@_mohansolo", provider: "google", role: "Antigravity 负责人", initials: "VM" },
-  { name: "Logan Kilpatrick", handle: "@OfficialLoganK", provider: "google", role: "Gemini 产品负责人", initials: "LK" },
-  { name: "Demis Hassabis", handle: "@demishassabis", provider: "google", role: "Google DeepMind CEO", initials: "DH" },
-  { name: "Claude Developers", handle: "@ClaudeDevs", provider: "anthropic", role: "Anthropic 官方开发者账号", initials: "CD" },
-  { name: "Boris Cherny", handle: "@bcherny", provider: "anthropic", role: "Claude Code 核心团队", initials: "BC" },
-  { name: "Alex Albert", handle: "@alexalbert__", provider: "anthropic", role: "开发者关系", initials: "AA" },
-];
+type ProviderStatus = { probability24h: number; probabilityReason: string; summary: string; lastResetAt: string; lastResetTitle: string };
+const STATUS = statusData as { updatedAt: string; providers: Record<Provider, ProviderStatus> };
 
-const INITIAL_POSTS: Post[] = [
-  {
-    id: "gemini-thanksgiving-20261126",
-    provider: "google",
-    providerLabel: "Gemini / Antigravity",
-    category: "reset",
-    author: "Varun Mohan",
-    handle: "@_mohansolo",
-    role: "Antigravity 负责人",
-    publishedAt: "2026-11-26T07:19:00Z",
-    summary: "给所有 Antigravity 用户重置 Gemini 额度，感恩节福利！",
-    originalText: "Resetting Gemini quota for all Antigravity users for Thanksgiving!",
-    sourceNote: "追踪站引用原帖；原 X 链接暂时无法直接打开核验。",
-    sourceVerified: false,
-    pinned: true,
-    reset: {
-      announcedAt: "2026-11-26T07:19:00Z",
-      effectiveAt: "2026-11-26T07:19:00Z",
-      probability24h: 15,
-      probabilityReason: "三天内已连续重置 3 次，刚完成一轮全量重置，短期再次重置概率偏低。",
-      resetNote: "感恩节福利重置；第三方追踪站有引用记录，原始外链未能独立核验。",
-    },
-    likes: 1842, reposts: 629, liked: false, reposted: false, bookmarked: true,
-  },
-  {
-    id: "openai-banked-reset-20261126",
-    provider: "openai",
-    providerLabel: "ChatGPT / Codex",
-    category: "reset",
-    author: "Tibo",
-    handle: "@thsottiaux",
-    role: "ChatGPT / Codex",
-    publishedAt: "2026-11-26T07:26:00Z",
-    summary: "Banked reset 已上线，补偿额度预计陆续到账。",
-    originalText: "Banked reset is online.",
-    sourceNote: "示例记录：来源说明需在接入真实数据源后补充原帖链接及核验状态。",
-    sourceVerified: false,
-    reset: {
-      announcedAt: "2026-11-26T02:50:00Z",
-      effectiveAt: "2026-11-26T08:04:00Z",
-      probability24h: 5,
-      probabilityReason: "刚完成一次补偿额度发放，目前没有新的官方重置暗示。",
-      resetNote: "Banked reset 补偿额度到账记录。",
-    },
-    likes: 1290, reposts: 341, liked: false, reposted: false, bookmarked: false,
-  },
-  {
-    id: "claude-reset-20261110",
-    provider: "anthropic",
-    providerLabel: "Claude / Claude Code",
-    category: "reset",
-    author: "Claude Developers",
-    handle: "@ClaudeDevs",
-    role: "Anthropic 官方开发者账号",
-    publishedAt: "2026-11-10T22:00:00Z",
-    summary: "Claude / Claude Code 额度重置公告；请在有效期结束前使用相关额度。",
-    originalText: "Claude usage reset announcement. Check Settings > Usage for the applicable expiry.",
-    sourceNote: "示例历史记录；具体适用用户、额度范围和截止时间应以官方公告为准。",
-    sourceVerified: false,
-    reset: {
-      announcedAt: "2026-11-10T22:00:00Z",
-      effectiveAt: "2026-11-11T06:00:00+08:00",
-      expiresAt: "2026-12-11T06:00:00+08:00",
-      probability24h: 5,
-      probabilityReason: "距离最近一次记录已有一段时间，暂未发现新的公开重置暗示。",
-      resetNote: "存在有效期字段；请以账户 Usage 页面显示为准。",
-    },
-    likes: 3410, reposts: 912, liked: false, reposted: false, bookmarked: true,
-  },
-  {
-    id: "tibo-post-20261126",
-    provider: "openai",
-    providerLabel: "ChatGPT / Codex",
-    category: "person",
-    author: "Tibo",
-    handle: "@thsottiaux",
-    role: "ChatGPT / Codex",
-    publishedAt: "2026-11-26T08:42:15Z",
-    summary: "Codex 云端容器运行状态更新。该内容属于普通动态，不应识别为额度重置。",
-    originalText: "Seeing smooth throughput on Codex cloud containers. Keep shipping!",
-    sourceNote: "普通人物动态示例。",
-    sourceVerified: false,
-    likes: 642, reposts: 88, liked: false, reposted: false, bookmarked: false,
-  },
-  {
-    id: "logan-post-20261126",
-    provider: "google",
-    providerLabel: "Gemini / Antigravity",
-    category: "person",
-    author: "Logan Kilpatrick",
-    handle: "@OfficialLoganK",
-    role: "Google AI Studio / Gemini",
-    publishedAt: "2026-11-26T06:15:30Z",
-    summary: "Gemini AI Studio 性能动态示例，不涉及额度重置。",
-    originalText: "Gemini context caching latency in AI Studio just dropped across regions.",
-    sourceNote: "普通人物动态示例。",
-    sourceVerified: false,
-    likes: 1120, reposts: 214, liked: false, reposted: false, bookmarked: false,
-  },
-];
+const PEOPLE = peopleData as Person[];
 
-const HISTORY = [
-  { at: "2026-11-26T08:04:00+08:00", provider: "openai" as Provider, title: "ChatGPT / Codex Banked Reset", detail: "补偿额度到账记录。" },
-  { at: "2026-11-26T15:19:00+08:00", provider: "google" as Provider, title: "Gemini / Antigravity 感恩节重置", detail: "Varun Mohan 发布全量重置消息，原帖链接待进一步核验。" },
-  { at: "2026-11-10T14:00:00+08:00", provider: "anthropic" as Provider, title: "Claude / Claude Code 重置公告", detail: "历史额度重置记录；有效期请以账户 Usage 页面为准。" },
-];
+const INITIAL_POSTS = postsData as unknown as Post[];
+
+const HISTORY = historyData as { at: string; provider: Provider; title: string; detail: string }[];
 
 const TIME_ZONE = "Asia/Shanghai";
 const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
@@ -231,15 +128,20 @@ function useToast() {
   return { message, show };
 }
 
-function Avatar({ name, provider, small = false }: { name: string; provider: Provider; small?: boolean }) {
+function Avatar({ name, provider, avatarUrl, small = false }: { name: string; provider: Provider; avatarUrl?: string; small?: boolean }) {
+  const [failed, setFailed] = useState(false);
   const initials = name.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
   const colors: Record<Provider, string> = {
     openai: "from-emerald-500 to-teal-700",
     google: "from-blue-500 to-indigo-600",
     anthropic: "from-amber-500 to-orange-700",
   };
+  const size = small ? "h-8 w-8 text-[10px]" : "h-10 w-10 text-xs";
+  if (avatarUrl && !failed) {
+    return <img src={avatarUrl} alt={`${name} 的头像`} loading="lazy" onError={() => setFailed(true)} className={`shrink-0 rounded-full object-cover ${size}`} />;
+  }
   return (
-    <div className={`grid shrink-0 place-items-center rounded-full bg-gradient-to-br ${colors[provider]} font-bold text-white ${small ? "h-8 w-8 text-[10px]" : "h-10 w-10 text-xs"}`}>
+    <div className={`grid shrink-0 place-items-center rounded-full bg-gradient-to-br ${colors[provider]} font-bold text-white ${size}`}>
       {initials}
     </div>
   );
@@ -326,7 +228,7 @@ function PostCard({ post, onAction, onSelectAuthor, onToast }: {
       {post.pinned && <div className="mb-2 ml-[52px] flex items-center gap-1.5 text-[11px] font-semibold text-amber-500"><Zap size={13} />最新重置动态</div>}
       <div className="flex gap-3">
         <button onClick={() => onSelectAuthor(post.handle)} aria-label={`筛选 ${post.author}`} className="h-fit rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <Avatar name={post.author} provider={post.provider} />
+          <Avatar name={post.author} provider={post.provider} avatarUrl={post.avatarUrl} />
         </button>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
@@ -433,7 +335,7 @@ export default function ResetRadar() {
     try {
       // TODO: Replace with API call, e.g. await api.get("/api/posts")
       await new Promise((resolve) => window.setTimeout(resolve, 350));
-      showToast("当前为本地示例数据，尚未连接实时数据源");
+      showToast(`数据由 Muse 每 12 小时自动拉取更新 · 上次更新 ${formatBeijingTime(STATUS.updatedAt)}`);
     } catch {
       showToast("同步失败，请稍后重试");
     } finally {
@@ -445,11 +347,8 @@ export default function ResetRadar() {
     const lines = [
       `御三家 AI 额度追踪快讯 · ${formatBeijingTime(now.toISOString())}（北京时间）`,
       ...(["google", "openai", "anthropic"] as Provider[]).map((key) => {
-        const latest = posts.filter((post) => post.provider === key && post.category === "reset")
-          .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())[0];
-        return latest
-          ? `${PROVIDERS[key].product}：${latest.summary}；24h 再重置概率约 ${latest.reset?.probability24h ?? "待评估"}%（社区估算）`
-          : `${PROVIDERS[key].product}：暂无重置记录`;
+        const st = STATUS.providers[key];
+        return `${PROVIDERS[key].product}：${st.summary}；24h 再重置概率约 ${st.probability24h}%（社区估算）`;
       }),
       "说明：重置概率为社区估算，不代表官方承诺。",
     ];
@@ -477,7 +376,7 @@ export default function ResetRadar() {
         <aside className="sticky top-0 hidden h-screen w-[76px] shrink-0 flex-col justify-between border-r border-[var(--line)] px-2 py-4 sm:flex xl:w-[250px] xl:px-4">
           <div>
             <div className="mb-7 flex items-center gap-3 px-3">
-              <img src="/logo.svg" alt="ResetRadar 标志" className="h-9 w-9 shrink-0 rounded-[10px]" />
+              <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="ResetRadar 标志" className="h-9 w-9 shrink-0 rounded-[10px]" />
               <div className="hidden xl:block"><div className="text-lg font-black tracking-tight">ResetRadar</div><div className="text-[11px] text-[var(--muted)]">御三家额度追踪</div></div>
             </div>
             <nav className="space-y-1">
@@ -551,7 +450,7 @@ export default function ResetRadar() {
           ) : null}
 
           {activeNav === "people" && <PeopleView followed={followed} onToggle={(handle) => setFollowed((current) => ({ ...current, [handle]: !current[handle] }))} onSelect={(handle) => { setSelectedHandle(handle); setActiveNav("feed"); }} />}
-          {activeNav === "probability" && <ProbabilityView posts={posts} />}
+          {activeNav === "probability" && <ProbabilityView />}
           {activeNav === "history" && <HistoryView />}
         </main>
 
@@ -562,18 +461,18 @@ export default function ResetRadar() {
             <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-4">
               <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-extrabold">御三家状态</h3><span className="text-[10px] text-[var(--muted)]">3 PROVIDERS</span></div>
               {(Object.keys(PROVIDERS) as Provider[]).map((key) => {
-                const latest = posts.filter((post) => post.provider === key && post.category === "reset").sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())[0];
+                const st = STATUS.providers[key];
                 return <button key={key} onClick={() => { setProvider(key); setActiveNav("feed"); }} className="flex w-full items-center gap-3 border-b border-[var(--line)] py-3 text-left last:border-0">
                   <ProviderMark provider={key} />
-                  <span className="min-w-0 flex-1"><span className="block text-xs font-bold">{PROVIDERS[key].product}</span><span className="mt-1 block truncate text-[10px] text-[var(--muted)]">{latest ? `最近记录 ${formatBeijingTime(latest.publishedAt)}` : "暂无重置记录"}</span></span>
-                  <span className="text-xs font-bold text-emerald-500">{latest?.reset?.probability24h != null ? `~${latest.reset.probability24h}%` : "—"}</span>
+                  <span className="min-w-0 flex-1"><span className="block text-xs font-bold">{PROVIDERS[key].product}</span><span className="mt-1 block truncate text-[10px] text-[var(--muted)]">{`最近重置 ${formatBeijingTime(st.lastResetAt)}`}</span></span>
+                  <span className="text-xs font-bold text-emerald-500">{~st.probability24h + "%"}</span>
                 </button>;
               })}
               <p className="mt-2 text-[10px] leading-5 text-[var(--muted)]">概率为社区公开信息估算，不代表官方承诺。</p>
             </div>
             <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-4">
               <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-extrabold">关键人物监听</h3><button onClick={() => setActiveNav("people")} className="text-xs font-semibold text-blue-500">全部人物</button></div>
-              {PEOPLE.slice(0, 6).map((person) => <button key={person.handle} onClick={() => { setSelectedHandle(person.handle); setActiveNav("feed"); }} className="flex w-full items-center gap-2.5 rounded-xl px-1 py-2 text-left transition hover:bg-[var(--hover)]"><Avatar name={person.name} provider={person.provider} small /><span className="min-w-0 flex-1"><span className="block truncate text-xs font-bold">{person.name}</span><span className="block truncate font-mono text-[10px] text-[var(--muted)]">{person.handle}</span></span><ProviderMark provider={person.provider} /></button>)}
+              {PEOPLE.slice(0, 6).map((person) => <button key={person.handle} onClick={() => { setSelectedHandle(person.handle); setActiveNav("feed"); }} className="flex w-full items-center gap-2.5 rounded-xl px-1 py-2 text-left transition hover:bg-[var(--hover)]"><Avatar name={person.name} provider={person.provider} avatarUrl={person.avatarUrl} small /><span className="min-w-0 flex-1"><span className="block truncate text-xs font-bold">{person.name}</span><span className="block truncate font-mono text-[10px] text-[var(--muted)]">{person.handle}</span></span><ProviderMark provider={person.provider} /></button>)}
             </div>
             <div className="rounded-2xl border border-[var(--line)] p-4">
               <div className="mb-3 flex items-center gap-2 text-sm font-extrabold"><ShieldCheck size={16} className="text-blue-500" />数据说明</div>
@@ -602,15 +501,12 @@ function EmptyState({ title, description, onClear }: { title: string; descriptio
 }
 
 function PeopleView({ followed, onToggle, onSelect }: { followed: Record<string, boolean>; onToggle: (handle: string) => void; onSelect: (handle: string) => void }) {
-  return <section className="p-4"><h2 className="text-base font-extrabold">关键人物雷达</h2><p className="mt-1 text-xs text-[var(--muted)]">点击人物查看其动态；同步开关目前仅管理本地关注状态。</p><div className="mt-4 grid gap-2.5 sm:grid-cols-2">{PEOPLE.map((person) => <div key={person.handle} className="flex items-center gap-3 rounded-2xl border border-[var(--line)] p-3"><button onClick={() => onSelect(person.handle)} className="flex min-w-0 flex-1 items-center gap-3 text-left"><Avatar name={person.name} provider={person.provider} /><span className="min-w-0"><span className="block truncate text-xs font-bold">{person.name}</span><span className="mt-0.5 block truncate font-mono text-[10px] text-[var(--muted)]">{person.handle}</span><span className="mt-1 block truncate text-[10px] text-[var(--muted)]">{person.role}</span></span></button><button onClick={() => onToggle(person.handle)} className={`shrink-0 rounded-full border px-3 py-1.5 text-[10px] font-bold ${followed[person.handle] ? "border-[var(--line)] text-[var(--muted)]" : "border-blue-500 bg-blue-500 text-white"}`}>{followed[person.handle] ? "已关注" : "关注"}</button></div>)}</div></section>;
+  return <section className="p-4"><h2 className="text-base font-extrabold">关键人物雷达</h2><p className="mt-1 text-xs text-[var(--muted)]">点击人物查看其动态；同步开关目前仅管理本地关注状态。</p><div className="mt-4 grid gap-2.5 sm:grid-cols-2">{PEOPLE.map((person) => <div key={person.handle} className="flex items-center gap-3 rounded-2xl border border-[var(--line)] p-3"><button onClick={() => onSelect(person.handle)} className="flex min-w-0 flex-1 items-center gap-3 text-left"><Avatar name={person.name} provider={person.provider} avatarUrl={person.avatarUrl} /><span className="min-w-0"><span className="block truncate text-xs font-bold">{person.name}</span><span className="mt-0.5 block truncate font-mono text-[10px] text-[var(--muted)]">{person.handle}</span><span className="mt-1 block truncate text-[10px] text-[var(--muted)]">{person.role}</span></span></button><button onClick={() => onToggle(person.handle)} className={`shrink-0 rounded-full border px-3 py-1.5 text-[10px] font-bold ${followed[person.handle] ? "border-[var(--line)] text-[var(--muted)]" : "border-blue-500 bg-blue-500 text-white"}`}>{followed[person.handle] ? "已关注" : "关注"}</button></div>)}</div></section>;
 }
 
-function ProbabilityView({ posts }: { posts: Post[] }) {
-  const items = (["openai", "google", "anthropic"] as Provider[]).map((provider) => {
-    const latest = posts.filter((post) => post.provider === provider && post.category === "reset").sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())[0];
-    return { provider, latest, probability: latest?.reset?.probability24h };
-  });
-  return <section className="space-y-3 p-4"><div><h2 className="text-base font-extrabold">未来 24h 再重置概率</h2><p className="mt-1 text-xs leading-5 text-[var(--muted)]">基于公开信息与历史节奏的社区估算，不代表官方承诺。</p></div>{items.map(({ provider, latest, probability }) => <div key={provider} className="rounded-2xl border border-[var(--line)] p-4"><div className="flex items-center gap-2"><ProviderMark provider={provider} /><strong className="flex-1 text-sm">{PROVIDERS[provider].product}</strong><strong className="font-mono text-lg text-emerald-500">{probability == null ? "—" : `~${probability}%`}</strong></div><div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[var(--surface-2)]"><div className="h-full rounded-full bg-emerald-500" style={{ width: `${probability ?? 0}%` }} /></div><p className="mt-3 text-xs leading-6 text-[var(--muted)]">{latest?.reset?.probabilityReason ?? "暂无足够的公开重置记录进行估算。"}</p></div>)}</section>;
+function ProbabilityView() {
+  const items = (["openai", "google", "anthropic"] as Provider[]).map((provider) => ({ provider, st: STATUS.providers[provider] }));
+  return <section className="space-y-3 p-4"><div><h2 className="text-base font-extrabold">未来 24h 再重置概率</h2><p className="mt-1 text-xs leading-5 text-[var(--muted)]">基于公开信息与历史节奏的社区估算，不代表官方承诺。数据更新于 {formatBeijingTime(STATUS.updatedAt)}（北京时间），由 Muse 每 12 小时拉取更新。</p></div>{items.map(({ provider, st }) => <div key={provider} className="rounded-2xl border border-[var(--line)] p-4"><div className="flex items-center gap-2"><ProviderMark provider={provider} /><strong className="flex-1 text-sm">{PROVIDERS[provider].product}</strong><strong className="font-mono text-lg text-emerald-500">~{st.probability24h}%</strong></div><div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[var(--surface-2)]"><div className="h-full rounded-full bg-emerald-500" style={{ width: `${st.probability24h}%` }} /></div><p className="mt-3 text-xs font-semibold leading-6">{st.summary}</p><p className="mt-1 text-xs leading-6 text-[var(--muted)]">判断依据：{st.probabilityReason}</p><p className="mt-1 text-[11px] leading-5 text-[var(--muted)]">最近一次重置：{st.lastResetTitle} · {formatBeijingTime(st.lastResetAt)}</p></div>)}</section>;
 }
 
 function HistoryView() {

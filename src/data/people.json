@@ -1,0 +1,73 @@
+[
+  {
+    "name": "Tibo",
+    "handle": "@thsottiaux",
+    "provider": "openai",
+    "role": "ChatGPT / Codex",
+    "initials": "TB",
+    "avatarUrl": "https://pbs.twimg.com/profile_images/2093807917833281537/2yBgpwVV_200x200.jpg"
+  },
+  {
+    "name": "Sam Altman",
+    "handle": "@sama",
+    "provider": "openai",
+    "role": "OpenAI CEO",
+    "initials": "SA",
+    "avatarUrl": "https://pbs.twimg.com/profile_images/2046764873200394240/r7BxVezs_200x200.jpg"
+  },
+  {
+    "name": "Greg Brockman",
+    "handle": "@gdb",
+    "provider": "openai",
+    "role": "OpenAI 联合创始人",
+    "initials": "GB",
+    "avatarUrl": "https://pbs.twimg.com/profile_images/1347621377503711233/bHg3ipfD_200x200.jpg"
+  },
+  {
+    "name": "Varun Mohan",
+    "handle": "@_mohansolo",
+    "provider": "google",
+    "role": "Antigravity 负责人",
+    "initials": "VM",
+    "avatarUrl": "https://pbs.twimg.com/profile_images/1658293192549339138/V0Y7u33__200x200.jpg"
+  },
+  {
+    "name": "Logan Kilpatrick",
+    "handle": "@OfficialLoganK",
+    "provider": "google",
+    "role": "Gemini 产品负责人",
+    "initials": "LK",
+    "avatarUrl": "https://pbs.twimg.com/profile_images/1943787288955084800/QOl7OJMc_200x200.jpg"
+  },
+  {
+    "name": "Demis Hassabis",
+    "handle": "@demishassabis",
+    "provider": "google",
+    "role": "Google DeepMind CEO",
+    "initials": "DH",
+    "avatarUrl": "https://pbs.twimg.com/profile_images/1990472620614053888/xrAu0wQL_200x200.jpg"
+  },
+  {
+    "name": "Claude Developers",
+    "handle": "@ClaudeDevs",
+    "provider": "anthropic",
+    "role": "Anthropic 官方开发者账号",
+    "initials": "CD",
+    "avatarUrl": "https://pbs.twimg.com/profile_images/2044472418815893504/xf14RxM8_200x200.png"
+  },
+  {
+    "name": "Boris Cherny",
+    "handle": "@bcherny",
+    "provider": "anthropic",
+    "role": "Claude Code 核心团队",
+    "initials": "BC",
+    "avatarUrl": "https://pbs.twimg.com/profile_images/1902044548936953856/J2jeik0t_200x200.jpg"
+  },
+  {
+    "name": "Alex Albert",
+    "handle": "@alexalbert__",
+    "provider": "anthropic",
+    "role": "开发者关系",
+    "initials": "AA"
+  }
+]
