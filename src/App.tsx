@@ -62,10 +62,10 @@ type Person = {
   avatarUrl?: string;
 };
 
-const PROVIDERS: Record<Provider, { name: string; product: string; mark: string; color: string }> = {
-  openai: { name: "OpenAI", product: "ChatGPT / Codex", mark: "◎", color: "text-emerald-500" },
-  google: { name: "Google", product: "Gemini / Antigravity", mark: "✦", color: "text-blue-500" },
-  anthropic: { name: "Anthropic", product: "Claude / Claude Code", mark: "✳", color: "text-orange-500" },
+const PROVIDERS: Record<Provider, { name: string; product: string; mark: string; color: string; bg: string }> = {
+  openai: { name: "OpenAI", product: "ChatGPT / Codex", mark: "◎", color: "text-emerald-500", bg: "bg-emerald-500" },
+  google: { name: "Google", product: "Gemini / Antigravity", mark: "✦", color: "text-blue-500", bg: "bg-blue-500" },
+  anthropic: { name: "Anthropic", product: "Claude / Claude Code", mark: "✳", color: "text-orange-500", bg: "bg-orange-500" },
 };
 
 type ProviderStatus = { probability24h: number; probabilityReason: string; summary: string; lastResetAt: string; lastResetTitle: string };
@@ -149,7 +149,7 @@ function Avatar({ name, provider, avatarUrl, small = false }: { name: string; pr
 
 function ProviderMark({ provider }: { provider: Provider }) {
   const item = PROVIDERS[provider];
-  return <span className={`inline-grid h-5 w-5 place-items-center text-base font-bold ${item.color}`} aria-label={item.name}>{item.mark}</span>;
+  return <span className={`inline-grid h-5 w-5 shrink-0 place-items-center rounded-md text-[11px] font-black leading-none text-white ${item.bg}`} aria-label={item.name}>{item.mark}</span>;
 }
 
 function ThemeControl({ mode, onChange, compact = false }: { mode: ThemeMode; onChange: (mode: ThemeMode) => void; compact?: boolean }) {
@@ -224,8 +224,8 @@ function PostCard({ post, onAction, onSelectAuthor, onToast }: {
   };
 
   return (
-    <article className="border-b border-[var(--line)] px-4 py-5 transition hover:bg-[var(--hover)] sm:px-5">
-      {post.pinned && <div className="mb-2 ml-[52px] flex items-center gap-1.5 text-[11px] font-semibold text-amber-500"><Zap size={13} />最新重置动态</div>}
+    <article className="border-b border-[var(--line)] px-4 py-4 transition hover:bg-[var(--hover)]">
+      {post.pinned && <div className="mb-2 ml-[52px] flex items-center gap-1.5 text-[11px] font-semibold text-amber-500"><Zap size={14} />最新重置动态</div>}
       <div className="flex gap-3">
         <button onClick={() => onSelectAuthor(post.handle)} aria-label={`筛选 ${post.author}`} className="h-fit rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
           <Avatar name={post.author} provider={post.provider} avatarUrl={post.avatarUrl} />
@@ -233,7 +233,7 @@ function PostCard({ post, onAction, onSelectAuthor, onToast }: {
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
             <button onClick={() => onSelectAuthor(post.handle)} className="truncate text-sm font-extrabold hover:underline">{post.author}</button>
-            <CheckCircle2 size={14} className={`shrink-0 ${post.sourceVerified ? "text-blue-500" : "text-[var(--muted)]"}`} />
+            <CheckCircle2 size={16} className={`shrink-0 ${post.sourceVerified ? "text-blue-500" : "text-[var(--muted)]"}`} />
             <span className="truncate font-mono text-xs text-[var(--muted)]">{post.handle}</span>
             <span className="text-xs text-[var(--muted)]">·</span>
             <time className="font-mono text-[11px] text-[var(--muted)]" dateTime={post.publishedAt}>{formatBeijingTime(post.publishedAt)}</time>
@@ -256,10 +256,10 @@ function PostCard({ post, onAction, onSelectAuthor, onToast }: {
           {post.category === "reset" && <ResetDetails post={post} />}
 
           <div className="mt-4 flex max-w-md items-center justify-between text-xs text-[var(--muted)]">
-            <button onClick={() => onAction(post.id, "reposted")} className={`inline-flex items-center gap-1.5 transition hover:text-emerald-500 ${post.reposted ? "font-bold text-emerald-500" : ""}`}><Repeat2 size={15} />{post.reposts.toLocaleString()}</button>
-            <button onClick={() => onAction(post.id, "liked")} className={`inline-flex items-center gap-1.5 transition hover:text-rose-500 ${post.liked ? "font-bold text-rose-500" : ""}`}><Heart size={15} fill={post.liked ? "currentColor" : "none"} />{post.likes.toLocaleString()}</button>
-            <button onClick={() => onAction(post.id, "bookmarked")} className={`inline-flex items-center gap-1.5 transition hover:text-blue-500 ${post.bookmarked ? "font-bold text-blue-500" : ""}`}><Bookmark size={15} fill={post.bookmarked ? "currentColor" : "none"} />{post.bookmarked ? "已收藏" : "收藏"}</button>
-            <button onClick={copyPost} className="inline-flex items-center gap-1.5 transition hover:text-blue-500"><Copy size={15} />复制</button>
+            <button onClick={() => onAction(post.id, "reposted")} className={`inline-flex items-center gap-1.5 transition hover:text-emerald-500 ${post.reposted ? "font-bold text-emerald-500" : ""}`}><Repeat2 size={18} />{post.reposts.toLocaleString()}</button>
+            <button onClick={() => onAction(post.id, "liked")} className={`inline-flex items-center gap-1.5 transition hover:text-rose-500 ${post.liked ? "font-bold text-rose-500" : ""}`}><Heart size={18} fill={post.liked ? "currentColor" : "none"} />{post.likes.toLocaleString()}</button>
+            <button onClick={() => onAction(post.id, "bookmarked")} className={`inline-flex items-center gap-1.5 transition hover:text-blue-500 ${post.bookmarked ? "font-bold text-blue-500" : ""}`}><Bookmark size={18} fill={post.bookmarked ? "currentColor" : "none"} />{post.bookmarked ? "已收藏" : "收藏"}</button>
+            <button onClick={copyPost} className="inline-flex items-center gap-1.5 transition hover:text-blue-500"><Copy size={18} />复制</button>
           </div>
         </div>
       </div>
@@ -272,7 +272,7 @@ function SidebarLink({ active, icon: Icon, label, count, onClick }: {
 }) {
   return (
     <button onClick={onClick} className={`flex w-full items-center justify-between rounded-full px-3.5 py-3 text-left transition hover:bg-[var(--hover)] ${active ? "font-extrabold" : "font-medium"}`}>
-      <span className="flex items-center gap-4"><Icon size={21} className={active ? "text-blue-500" : ""} /><span className="hidden xl:inline text-[15px]">{label}</span></span>
+      <span className="flex items-center gap-4"><Icon size={22} className={active ? "text-blue-500" : ""} /><span className="hidden xl:inline text-[15px]">{label}</span></span>
       {!!count && <span className="hidden rounded-full bg-blue-500/10 px-2 py-0.5 text-[10px] font-bold text-blue-500 xl:inline">{count}</span>}
     </button>
   );
@@ -369,7 +369,7 @@ export default function ResetRadar() {
         *{box-sizing:border-box}
       `}</style>
 
-      {toast && <div role="status" className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2 rounded-full bg-[#1d9bf0] px-4 py-2.5 text-xs font-semibold text-white shadow-xl">{toast}</div>}
+      {toast && <div role="status" className="fixed bottom-20 left-1/2 z-50 -translate-x-1/2 sm:bottom-5 rounded-full bg-[#1d9bf0] px-4 py-2.5 text-xs font-semibold text-white shadow-xl">{toast}</div>}
 
       <div className="mx-auto flex max-w-[1320px] justify-center">
         {/* Left navigation */}
@@ -387,7 +387,7 @@ export default function ResetRadar() {
               <SidebarLink active={activeNav === "bookmarks"} icon={Bookmark} label="已收藏情报" onClick={() => selectNav("bookmarks")} />
             </nav>
             <button onClick={refreshPosts} className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-[#1d9bf0] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#1688d0]">
-              <RefreshCw size={17} className={refreshing ? "animate-spin" : ""} /><span className="hidden xl:inline">刷新数据</span>
+              <RefreshCw size={18} className={refreshing ? "animate-spin" : ""} /><span className="hidden xl:inline">刷新数据</span>
             </button>
           </div>
           <div className="hidden space-y-3 xl:block">
@@ -402,12 +402,13 @@ export default function ResetRadar() {
           <header className="sticky top-0 z-30 border-b border-[var(--line)] bg-[var(--page)]/85 backdrop-blur-xl">
             <div className="flex items-center justify-between gap-3 px-4 py-3.5">
               <div className="min-w-0">
-                <div className="flex items-center gap-2"><h1 className="truncate text-base font-extrabold sm:text-lg">御三家 AI 额度追踪</h1><span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-1 text-[9px] font-extrabold tracking-wide text-emerald-600 dark:text-emerald-400"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />LIVE</span></div>
+                <div className="flex items-center gap-2"><h1 className="truncate text-base font-extrabold sm:text-lg">御三家 AI 额度追踪</h1><span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-extrabold tracking-wide text-emerald-600 dark:text-emerald-400"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />LIVE</span></div>
                 <p className="mt-1 font-mono text-[10px] text-[var(--muted)]">{formatBeijingTime(now.toISOString())} BJT</p>
               </div>
               <div className="flex items-center gap-2">
-                <button onClick={copyBriefing} title="复制御三家快讯" className="rounded-full p-2 text-[var(--muted)] transition hover:bg-[var(--hover)] hover:text-blue-500"><Copy size={17} /></button>
-                <button onClick={refreshPosts} className="flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3 py-2 text-xs font-semibold transition hover:bg-[var(--hover)]"><RefreshCw size={14} className={refreshing ? "animate-spin text-blue-500" : ""} /><span className="hidden sm:inline">刷新</span></button>
+                <button onClick={() => setMode(mode === "system" ? "light" : mode === "light" ? "dark" : "system")} title={`外观：${mode === "system" ? "跟随系统" : mode === "light" ? "浅色" : "深色"}`} className="rounded-full p-2 text-[var(--muted)] transition hover:bg-[var(--hover)] hover:text-blue-500 xl:hidden">{mode === "system" ? <Monitor size={18} /> : mode === "light" ? <Sun size={18} /> : <Moon size={18} />}</button>
+                <button onClick={copyBriefing} title="复制御三家快讯" className="rounded-full p-2 text-[var(--muted)] transition hover:bg-[var(--hover)] hover:text-blue-500"><Copy size={18} /></button>
+                <button onClick={refreshPosts} className="flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3 py-2 text-xs font-semibold transition hover:bg-[var(--hover)]"><RefreshCw size={16} className={refreshing ? "animate-spin text-blue-500" : ""} /><span className="hidden sm:inline">刷新</span></button>
               </div>
             </div>
 
@@ -423,7 +424,7 @@ export default function ResetRadar() {
           </header>
 
           {/* Compact overview */}
-          <section className="border-b border-[var(--line)] p-3.5">
+          <section className="border-b border-[var(--line)] px-4 py-3">
             <div className="grid grid-cols-3 gap-2">
               <Metric label="追踪厂商" value="03" tone="default" />
               <Metric label="重置事件" value={String(resetCount).padStart(2, "0")} tone="green" />
@@ -435,14 +436,14 @@ export default function ResetRadar() {
                   {key === "all" ? "全部厂商" : PROVIDERS[key].name}
                 </button>
               ))}
-              {selectedHandle && <button onClick={() => setSelectedHandle("")} className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-3 py-1.5 text-[11px] font-semibold text-blue-500">账号：{selectedHandle}<X size={12} /></button>}
+              {selectedHandle && <button onClick={() => setSelectedHandle("")} className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-3 py-1.5 text-[11px] font-semibold text-blue-500">账号：{selectedHandle}<X size={14} /></button>}
             </div>
           </section>
 
           {activeNav === "feed" || activeNav === "bookmarks" ? (
             <>
               <div className="border-b border-[var(--line)] px-4 py-3">
-                <div className="relative"><Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索帖子、人物、模型或关键词" className="w-full rounded-full bg-[var(--surface-2)] py-2.5 pl-9 pr-9 text-xs outline-none ring-0 placeholder:text-[var(--muted)] focus:ring-1 focus:ring-blue-500" />{query && <button onClick={() => setQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted)]"><X size={15} /></button>}</div>
+                <div className="relative"><Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索帖子、人物、模型或关键词" className="w-full rounded-full bg-[var(--surface-2)] py-2.5 pl-9 pr-9 text-xs outline-none ring-0 placeholder:text-[var(--muted)] focus:ring-1 focus:ring-blue-500" />{query && <button onClick={() => setQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted)]"><X size={16} /></button>}</div>
               </div>
               <div className="flex items-center justify-between px-4 py-3"><h2 className="text-sm font-extrabold">{activeNav === "bookmarks" ? "已收藏情报" : "最新动态"}</h2><span className="text-[10px] text-[var(--muted)]">按发布时间倒序 · 北京时间</span></div>
               {visiblePosts.length ? visiblePosts.map((post) => <PostCard key={post.id} post={post} onAction={toggleAction} onSelectAuthor={(handle) => { setSelectedHandle(handle); setActiveNav("feed"); }} onToast={showToast} />) : <EmptyState title="暂无最新帖子 / 重置事件" description="没有符合当前筛选条件的内容。试试清除搜索词或切换筛选条件。" onClear={() => { setQuery(""); setCategory("all"); setProvider("all"); setSelectedHandle(""); }} />}
@@ -462,7 +463,7 @@ export default function ResetRadar() {
               <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-extrabold">御三家状态</h3><span className="text-[10px] text-[var(--muted)]">3 PROVIDERS</span></div>
               {(Object.keys(PROVIDERS) as Provider[]).map((key) => {
                 const st = STATUS.providers[key];
-                return <button key={key} onClick={() => { setProvider(key); setActiveNav("feed"); }} className="flex w-full items-center gap-3 border-b border-[var(--line)] py-3 text-left last:border-0">
+                return <button key={key} onClick={() => { setProvider(key); setActiveNav("feed"); }} className="-mx-2 flex w-full items-center gap-3 rounded-lg border-b border-[var(--line)] px-2 py-3 text-left transition last:border-0 hover:bg-[var(--hover)]">
                   <ProviderMark provider={key} />
                   <span className="min-w-0 flex-1"><span className="block text-xs font-bold">{PROVIDERS[key].product}</span><span className="mt-1 block truncate text-[10px] text-[var(--muted)]">{`最近重置 ${formatBeijingTime(st.lastResetAt)}`}</span></span>
                   <span className="text-xs font-bold text-emerald-500">{~st.probability24h + "%"}</span>
@@ -474,7 +475,7 @@ export default function ResetRadar() {
               <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-extrabold">关键人物监听</h3><button onClick={() => setActiveNav("people")} className="text-xs font-semibold text-blue-500">全部人物</button></div>
               {PEOPLE.slice(0, 6).map((person) => <button key={person.handle} onClick={() => { setSelectedHandle(person.handle); setActiveNav("feed"); }} className="flex w-full items-center gap-2.5 rounded-xl px-1 py-2 text-left transition hover:bg-[var(--hover)]"><Avatar name={person.name} provider={person.provider} avatarUrl={person.avatarUrl} small /><span className="min-w-0 flex-1"><span className="block truncate text-xs font-bold">{person.name}</span><span className="block truncate font-mono text-[10px] text-[var(--muted)]">{person.handle}</span></span><ProviderMark provider={person.provider} /></button>)}
             </div>
-            <div className="rounded-2xl border border-[var(--line)] p-4">
+            <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-4">
               <div className="mb-3 flex items-center gap-2 text-sm font-extrabold"><ShieldCheck size={16} className="text-blue-500" />数据说明</div>
               <p className="text-[11px] leading-6 text-[var(--muted)]">所有时间统一显示为北京时间（UTC+8）。官方原帖、第三方转述和社区推测应分别标记。概率仅为社区估算，不代表官方承诺；未能打开的外链会明确标注为待核验。</p>
               <div className="mt-4 border-t border-[var(--line)] pt-3"><div className="mb-2 text-[11px] font-bold">外观模式</div><ThemeControl mode={mode} onChange={setMode} compact /></div>
@@ -485,7 +486,7 @@ export default function ResetRadar() {
 
       {/* Mobile bottom navigation */}
       <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-[var(--line)] bg-[var(--page)]/95 px-1 py-2 backdrop-blur-xl sm:hidden">
-        {([{ id: "feed" as const, Icon: Radio, label: "动态" }, { id: "people" as const, Icon: Users, label: "人物" }, { id: "probability" as const, Icon: TrendingUp, label: "概率" }, { id: "history" as const, Icon: Clock3, label: "历史" }, { id: "bookmarks" as const, Icon: Bookmark, label: "收藏" }]).map(({ id, Icon, label }) => <button key={id} onClick={() => selectNav(id)} className={`flex flex-col items-center gap-1 py-1 text-[10px] font-semibold ${activeNav === id ? "text-blue-500" : "text-[var(--muted)]"}`}><Icon size={19} /><span>{label}</span></button>)}
+        {([{ id: "feed" as const, Icon: Radio, label: "动态" }, { id: "people" as const, Icon: Users, label: "人物" }, { id: "probability" as const, Icon: TrendingUp, label: "概率" }, { id: "history" as const, Icon: Clock3, label: "历史" }, { id: "bookmarks" as const, Icon: Bookmark, label: "收藏" }]).map(({ id, Icon, label }) => <button key={id} onClick={() => selectNav(id)} className={`flex flex-col items-center gap-1 py-1 text-[10px] font-semibold ${activeNav === id ? "text-blue-500" : "text-[var(--muted)]"}`}><Icon size={22} /><span>{label}</span></button>)}
       </nav>
     </div>
   );
