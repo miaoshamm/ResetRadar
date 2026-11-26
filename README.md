@@ -6,7 +6,7 @@
 
 御三家模型额度重置追踪面板的 React + TypeScript 前端示例。
 
-> 品牌标志为蓝色雷达屏：同心扫描环与右上扫描扇区象征实时监测，屏上的白、绿、黄三个光点分别代表被追踪的御三家厂商。源文件为 `public/logo.svg`，另有 `public/favicon.svg`、`public/favicon.ico` 与多尺寸 PNG 图标供浏览器标签页和移动端主屏幕使用。
+> 品牌标志为深蓝雷达屏：同心扫描环与绿色扫描扇区象征实时监测，屏上的三个光点是御三家本尊的官方图形（蓝色 Gemini 星芒、绿色 OpenAI 结标、橙色 Claude 星芒，取自 Lobe Icons），像三架被雷达锁定的目标。源文件为 `public/logo.svg`，另有 `public/favicon.svg`、`public/favicon.ico` 与多尺寸 PNG 图标供浏览器标签页和移动端主屏幕使用。
 
 ## 环境要求
 
