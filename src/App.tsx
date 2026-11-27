@@ -107,6 +107,14 @@ function formatBeijingTime(value?: string) {
   return `${parts.year}-${parts.month}-${parts.day} ${parts.hour}:${parts.minute}:${parts.second}`;
 }
 
+function formatBeijingDate(value?: string) {
+  if (!value) return "待确认";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "待确认";
+  const parts = Object.fromEntries(dateFormatter.formatToParts(date).map((p) => [p.type, p.value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
 function useTheme() {
   const [mode, setMode] = useState<ThemeMode>(() => {
     try {
@@ -225,7 +233,7 @@ function ResetDetails({ post }: { post: Post }) {
 }
 
 function TimeField({ label, value }: { label: string; value?: string }) {
-  return <div><div className="mb-1 text-[11px] text-[var(--muted)]">{label}</div><div className="font-mono text-xs font-semibold">{formatBeijingTime(value)}</div><div className="mt-0.5 text-[10px] text-[var(--muted)]">北京时间 UTC+8</div></div>;
+  return <div><div className="mb-1 text-[11px] text-[var(--muted)]">{label}</div><div className="font-mono text-xs font-semibold">{formatBeijingDate(value)}</div><div className="mt-0.5 text-[10px] text-[var(--muted)]">北京时间 UTC+8</div></div>;
 }
 
 function PostCard({ post, onAction, onSelectAuthor, onToast }: {
@@ -236,7 +244,7 @@ function PostCard({ post, onAction, onSelectAuthor, onToast }: {
 }) {
   const provider = PROVIDERS[post.provider];
   const copyPost = async () => {
-    const text = `${post.author} ${post.handle}\n${formatBeijingTime(post.publishedAt)}\n${post.originalText}\n${post.summary}\n${post.sourceNote}`;
+    const text = `${post.author} ${post.handle}\n${formatBeijingDate(post.publishedAt)}\n${post.originalText}\n${post.summary}\n${post.sourceNote}`;
     try { await navigator.clipboard.writeText(text); onToast("已复制帖子内容"); }
     catch { onToast("复制失败，请检查浏览器剪贴板权限"); }
   };
@@ -254,7 +262,7 @@ function PostCard({ post, onAction, onSelectAuthor, onToast }: {
             <CheckCircle2 size={16} className={`shrink-0 ${post.sourceVerified ? "text-blue-500" : "text-[var(--muted)]"}`} />
             <span className="truncate font-mono text-xs text-[var(--muted)]">{post.handle}</span>
             <span className="text-xs text-[var(--muted)]">·</span>
-            <time className="font-mono text-[11px] text-[var(--muted)]" dateTime={post.publishedAt}>{formatBeijingTime(post.publishedAt)}</time>
+            <time className="font-mono text-[11px] text-[var(--muted)]" dateTime={post.publishedAt}>{formatBeijingDate(post.publishedAt)}</time>
           </div>
 
           <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -491,7 +499,7 @@ export default function ResetRadar() {
                 const st = STATUS.providers[key];
                 return <button key={key} onClick={() => { setProvider(key); setActiveNav("feed"); }} className="-mx-2 flex w-full items-center gap-3 rounded-lg border-b border-[var(--line)] px-2 py-3 text-left transition last:border-0 hover:bg-[var(--hover)]">
                   <ProviderMark provider={key} />
-                  <span className="min-w-0 flex-1"><span className="block text-xs font-bold">{PROVIDERS[key].product}</span><span className="mt-1 block truncate text-[10px] text-[var(--muted)]">{`最近重置 ${formatBeijingTime(st.lastResetAt)}`}</span></span>
+                  <span className="min-w-0 flex-1"><span className="block text-xs font-bold">{PROVIDERS[key].product}</span><span className="mt-1 block truncate text-[10px] text-[var(--muted)]">{`最近重置 ${formatBeijingDate(st.lastResetAt)}`}</span></span>
                   <span className="text-xs font-bold text-emerald-500">{"~" + st.probability24h + "%"}</span>
                 </button>;
               })}
@@ -554,7 +562,7 @@ function PeopleView({ followed, onToggle, onSelect }: { followed: Record<string,
 
 function ProbabilityView() {
   const items = (["openai", "google", "anthropic"] as Provider[]).map((provider) => ({ provider, st: STATUS.providers[provider] }));
-  return <section className="space-y-3 p-4"><div><h2 className="text-base font-extrabold">未来 24h 再重置概率</h2><p className="mt-1 text-xs leading-5 text-[var(--muted)]">基于公开信息与历史节奏的社区估算，不代表官方承诺。{`数据更新于 ${formatBeijingTime(STATUS.updatedAt)}（北京时间），由 Muse 每小时拉取更新。`}</p></div>{items.map(({ provider, st }) => <div key={provider} className="rounded-2xl border border-[var(--line)] p-4"><div className="flex items-center gap-2"><ProviderMark provider={provider} /><strong className="flex-1 text-sm">{PROVIDERS[provider].product}</strong><strong className="font-mono text-lg text-emerald-500">~{st.probability24h}%</strong></div><div className="mt-3 h-1.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/15"><div className="h-full rounded-full bg-emerald-500" style={{ width: `${st.probability24h}%` }} /></div><p className="mt-3 text-xs font-semibold leading-6">{st.summary}</p><p className="mt-1 text-xs leading-6 text-[var(--muted)]">判断依据：{st.probabilityReason}</p><p className="mt-1 text-[11px] leading-5 text-[var(--muted)]">最近一次重置：{st.lastResetTitle} · {formatBeijingTime(st.lastResetAt)}</p></div>)}</section>;
+  return <section className="space-y-3 p-4"><div><h2 className="text-base font-extrabold">未来 24h 再重置概率</h2><p className="mt-1 text-xs leading-5 text-[var(--muted)]">基于公开信息与历史节奏的社区估算，不代表官方承诺。{`数据更新于 ${formatBeijingTime(STATUS.updatedAt)}（北京时间），由 Muse 每小时拉取更新。`}</p></div>{items.map(({ provider, st }) => <div key={provider} className="rounded-2xl border border-[var(--line)] p-4"><div className="flex items-center gap-2"><ProviderMark provider={provider} /><strong className="flex-1 text-sm">{PROVIDERS[provider].product}</strong><strong className="font-mono text-lg text-emerald-500">~{st.probability24h}%</strong></div><div className="mt-3 h-1.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/15"><div className="h-full rounded-full bg-emerald-500" style={{ width: `${st.probability24h}%` }} /></div><p className="mt-3 text-xs font-semibold leading-6">{st.summary}</p><p className="mt-1 text-xs leading-6 text-[var(--muted)]">判断依据：{st.probabilityReason}</p><p className="mt-1 text-[11px] leading-5 text-[var(--muted)]">最近一次重置：{st.lastResetTitle} · {formatBeijingDate(st.lastResetAt)}</p></div>)}</section>;
 }
 
 function HistoryView() {
@@ -616,7 +624,7 @@ function HistoryView() {
           <div className="mt-2 space-y-2">
             {selectedEvents.map((event) => (
               <div key={`${event.provider}-${event.at}`} className={`rounded-2xl border border-[var(--line)] border-l-[3px] ${PROVIDER_BORDER[event.provider]} p-3`}>
-                <div className="flex items-center gap-2"><ProviderMark provider={event.provider} small /><span className="text-xs font-bold">{event.title}</span><span className="ml-auto shrink-0 font-mono text-[10px] text-[var(--muted)]">{formatBeijingTime(event.at)}</span></div>
+                <div className="flex items-center gap-2"><ProviderMark provider={event.provider} small /><span className="text-xs font-bold">{event.title}</span><span className="ml-auto shrink-0 font-mono text-[10px] text-[var(--muted)]">{formatBeijingDate(event.at)}</span></div>
                 <p className="mt-1.5 text-xs leading-5 text-[var(--muted)]">{event.detail}</p>
               </div>
             ))}
@@ -626,7 +634,7 @@ function HistoryView() {
 
       <h3 className="mt-6 text-sm font-extrabold">全部重置历史</h3>
       <div className="relative mt-4 space-y-5 border-l-2 border-[var(--muted)]/30 pl-5">
-        {sortedHistory.map((event) => <div key={`${event.provider}-${event.at}`} className="relative"><span className="absolute -left-[26px] top-1 h-3 w-3 rounded-full bg-blue-500 ring-4 ring-[var(--page)]" /><div className="flex flex-wrap items-center gap-2"><span className="font-mono text-[11px] font-bold text-blue-500">{formatBeijingTime(event.at)}</span><ProviderMark provider={event.provider} /></div><h4 className="mt-1 text-sm font-bold">{event.title}</h4><p className="mt-1 text-xs leading-6 text-[var(--muted)]">{event.detail}</p></div>)}
+        {sortedHistory.map((event) => <div key={`${event.provider}-${event.at}`} className="relative"><span className="absolute -left-[26px] top-1 h-3 w-3 rounded-full bg-blue-500 ring-4 ring-[var(--page)]" /><div className="flex flex-wrap items-center gap-2"><span className="font-mono text-[11px] font-bold text-blue-500">{formatBeijingDate(event.at)}</span><ProviderMark provider={event.provider} /></div><h4 className="mt-1 text-sm font-bold">{event.title}</h4><p className="mt-1 text-xs leading-6 text-[var(--muted)]">{event.detail}</p></div>)}
       </div>
     </section>
   );
