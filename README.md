@@ -4,64 +4,25 @@
 
 # ResetRadar
 
-御三家模型额度重置追踪面板的 React + TypeScript 前端示例。
+**御三家 AI 额度重置追踪站** —— 盯着 OpenAI、Google、Anthropic 三家的订阅额度什么时候重置，不用再自己满世界刷消息。
 
-> 品牌标志为深蓝雷达屏：同心扫描环与绿色扫描扇区象征实时监测，屏上的三个光点是御三家本尊的官方图形（蓝色 Gemini 星芒、绿色 OpenAI 结标、橙色 Claude 星芒，取自 Lobe Icons），像三架被雷达锁定的目标。源文件为 `public/logo.svg`，另有 `public/favicon.svg`、`public/favicon.ico` 与多尺寸 PNG 图标供浏览器标签页和移动端主屏幕使用。
+在线访问：https://resetradar.aikio.blog
 
-## 环境要求
+## 这个项目可以做什么
 
-- Node.js 20.19+ 或 22.12+
-- npm
-
-## 启动开发环境
-
-```bash
-npm install
-npm run dev
-```
-
-浏览器打开终端输出的地址，通常是 http://localhost:5173。
-
-## 构建生产版本
-
-```bash
-npm run build
-npm run preview
-```
-
-生产静态文件输出到 `dist/`，可部署到 Nginx 等静态 Web 服务器。
+- **今日雷达总览**：打开首页就能看到三家未来 24 小时的重置概率、判断依据和一句话总结，哪家最可能重置一目了然。
+- **官方动态流**：汇总三家官方账号和核心人物（Sam Altman、Demis Hassabis、Sundar Pichai、Tibo、Varun Mohan、Boris Cherny 等）的最新公开动态，可按厂商筛选；真正的重置帖子会单独标出公布时间、生效时间和重置说明。
+- **重置日历**：近两个月的真实重置记录都在日历上，点任意一天就能看到当天哪家重置过、因为什么重置，方便摸清各家的重置节奏。
+- **概率研判**：每次重置的可能性不是瞎猜，而是结合各家近期的重置频率、官方表态和相关传闻综合判断，并写明依据。
+- **一键快讯**：可以把三家的概率和最新动态一键复制成一段文字，直接转发到群里或社交平台分享。
+- **随时看**：支持深色 / 浅色主题，手机和电脑上都能用。
 
 ## 数据说明
 
-- 页面数据来自 `src/data/` 下的 JSON 文件（相当于轻量数据库）：`posts.json`（帖子，只保留最近 100 条，每条带作者头像）、`people.json`（监听人物与头像）、`history.json`（重置历史）、`status.json`（御三家当前重置概率、判断依据与一句话总结）。
-- 数据由 Muse 每 12 小时自动拉取一次：来源为御三家官方账号、代言人/核心成员的公开帖子（经 X 镜像站核对），以及网络上相关的重置传闻（传闻会标注为待核验）。
-- 每次拉取后，Muse 重新判断各家的 24h 重置概率与重置来源，更新 JSON 后以 Muse 的名义提交推送；推送后由既有部署流水线自动构建上线（resetradar.aikio.blog），无需人工操作。
-- 概率为基于公开信息的社区估算，不构成官方承诺；帖子均保留来源链接与核验状态。
-- 厂商图标来自 [Lobe Icons](https://github.com/lobehub/lobe-icons)（`@lobehub/icons-static-svg`，MIT），以官方 OpenAI / Gemini / Claude 品牌图形内联渲染。
-- 主题偏好保存在浏览器 localStorage。
-- 时间统一按 Asia/Shanghai（北京时间，UTC+8）显示。
+- 数据由 Muse 每 12 小时自动更新一次，来源是三家官方账号与核心人物的公开帖子，每条都核对过原文并附来源链接；未经证实的传闻会明确标注「待核验」，不会当成事实。
+- 重置概率是基于公开信息的社区估算，不构成官方承诺，请结合自己的订阅情况判断。
+- 页面上的时间均为北京时间（UTC+8）。
 
-## 项目结构
+---
 
-```text
-reset-radar/
-├── index.html
-├── package.json
-├── vite.config.ts
-├── tsconfig.json
-├── tsconfig.node.json
-├── public/
-│   ├── logo.svg / logo-192.png / logo-512.png
-│   ├── favicon.svg / favicon.ico / favicon-32.png
-│   ├── apple-touch-icon.png
-│   └── site.webmanifest
-└── src/
-    ├── App.tsx
-    ├── main.tsx
-    ├── index.css
-    └── data/
-        ├── posts.json
-        ├── people.json
-        ├── history.json
-        └── status.json
-```
+厂商图标与 Logo 中的品牌图形来自 [Lobe Icons](https://github.com/lobehub/lobe-icons)（MIT）。
