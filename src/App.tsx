@@ -32,6 +32,7 @@ type Post = {
   avatarUrl?: string;
   role: string;
   publishedAt: string; // ISO timestamp or YYYY-MM-DD HH:mm:ss interpreted as Beijing time by the API contract
+  timeVerified?: boolean; // true when publishedAt carries a real publish time (via Grok X search); otherwise date-only display
   summary: string;
   originalText: string;
   sourceNote: string;
@@ -244,7 +245,7 @@ function PostCard({ post, onAction, onSelectAuthor, onToast }: {
 }) {
   const provider = PROVIDERS[post.provider];
   const copyPost = async () => {
-    const text = `${post.author} ${post.handle}\n${formatBeijingDate(post.publishedAt)}\n${post.originalText}\n${post.summary}\n${post.sourceNote}`;
+    const text = `${post.author} ${post.handle}\n${post.timeVerified ? formatBeijingTime(post.publishedAt) : formatBeijingDate(post.publishedAt)}\n${post.originalText}\n${post.summary}\n${post.sourceNote}`;
     try { await navigator.clipboard.writeText(text); onToast("已复制帖子内容"); }
     catch { onToast("复制失败，请检查浏览器剪贴板权限"); }
   };
@@ -262,7 +263,7 @@ function PostCard({ post, onAction, onSelectAuthor, onToast }: {
             <CheckCircle2 size={16} className={`shrink-0 ${post.sourceVerified ? "text-blue-500" : "text-[var(--muted)]"}`} />
             <span className="truncate font-mono text-xs text-[var(--muted)]">{post.handle}</span>
             <span className="text-xs text-[var(--muted)]">·</span>
-            <time className="font-mono text-[11px] text-[var(--muted)]" dateTime={post.publishedAt}>{formatBeijingDate(post.publishedAt)}</time>
+            <time className="font-mono text-[11px] text-[var(--muted)]" dateTime={post.publishedAt}>{post.timeVerified ? formatBeijingTime(post.publishedAt) : formatBeijingDate(post.publishedAt)}</time>
           </div>
 
           <div className="mt-2 flex flex-wrap items-center gap-2">
