@@ -372,7 +372,7 @@ export default function ResetRadar() {
           <div>
             <div className="mb-7 flex items-center gap-3 px-3">
               <img src={`${import.meta.env.BASE_URL}logo.png`} alt="ResetRadar 标志" className="h-9 w-9 shrink-0 rounded-[10px]" />
-              <div className="hidden xl:block"><div className="text-lg font-black tracking-tight">ResetRadar</div><div className="text-[11px] text-[var(--muted)]">御三家额度追踪</div></div>
+              <div className="hidden xl:block"><div className="text-lg font-black tracking-tight">ResetRadar</div><div className="text-[11px] text-[var(--muted)]">御三家额度重置追踪</div></div>
             </div>
             <nav className="space-y-1">
               <SidebarLink active={activeNav === "feed"} icon={Radio} label="实时监测流" count={alertCount} onClick={() => selectNav("feed")} />
@@ -404,7 +404,7 @@ export default function ResetRadar() {
           <header className="sticky top-0 z-30 border-b border-[var(--line)] bg-[var(--page)]/85 backdrop-blur-xl">
             <div className="flex items-center justify-between gap-3 px-4 py-3.5">
               <div className="min-w-0">
-                <div className="flex items-center gap-2"><h1 className="truncate text-base font-extrabold sm:text-lg">御三家 AI 额度追踪</h1><span className="inline-flex items-center rounded-full bg-[var(--surface-2)] px-2 py-1 text-[10px] font-semibold text-[var(--muted)]">{`更新于 ${formatBeijingTime(STATUS.updatedAt).slice(11, 16)}`}</span></div>
+                <div className="flex items-center gap-2"><h1 className="truncate text-base font-extrabold sm:text-lg">御三家 AI 额度重置追踪</h1><span className="inline-flex items-center rounded-full bg-[var(--surface-2)] px-2 py-1 text-[10px] font-semibold text-[var(--muted)]">{`更新于 ${formatBeijingTime(STATUS.updatedAt).slice(11, 16)}`}</span></div>
                 <p className="mt-1 font-mono text-[10px] text-[var(--muted)]">{`${formatBeijingTime(now.toISOString())} BJT`}</p>
               </div>
               <div className="flex items-center gap-2">

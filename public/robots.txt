@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://resetradar.aikio.blog/sitemap.xml
