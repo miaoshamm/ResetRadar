@@ -1,5 +1,27 @@
 [
  {
+  "id": "logan-instinct-onboarding-20261128",
+  "provider": "google",
+  "providerLabel": "Google",
+  "category": "person",
+  "author": "Logan Kilpatrick",
+  "handle": "@OfficialLoganK",
+  "role": "Gemini 产品负责人",
+  "avatarUrl": "https://pbs.twimg.com/profile_images/1943787288955084800/QOl7OJMc_200x200.jpg",
+  "publishedAt": "2026-11-28T05:52:00+08:00",
+  "timeVerified": true,
+  "summary": "Logan 让非技术背景的家人试用 @instinct，认为好的智能体体验上手极快，2027 年上手时间将缩至几分钟，且因留在短信里而留存好。",
+  "originalText": "I've onboarded a few non-tech family members to @instinct over the last week, it's crazy how fast people just get it, time to value for good agent experiences in 2027 is going to be minutes or less. And it is retentive because you don't need a new app. Texting for the win!",
+  "likes": 0,
+  "reposts": 0,
+  "liked": false,
+  "reposted": false,
+  "bookmarked": false,
+  "sourceVerified": true,
+  "sourceNote": "",
+  "sourceUrl": "https://x.com/OfficialLoganK/status/2126434025292144821"
+ },
+ {
   "id": "aisqwakbox-codex-banked-reset-20261128",
   "provider": "openai",
   "providerLabel": "ChatGPT / Codex",
@@ -2388,27 +2410,5 @@
   "reposted": false,
   "bookmarked": false,
   "sourceUrl": "https://finchview.com/OfficialLoganK"
- },
- {
-  "id": "claudedevs-20261124-25",
-  "provider": "anthropic",
-  "providerLabel": "Claude / Claude Code",
-  "category": "person",
-  "author": "Claude Developers",
-  "handle": "@ClaudeDevs",
-  "avatarUrl": "https://pbs.twimg.com/profile_images/2044472418815893504/xf14RxM8_200x200.png",
-  "role": "Anthropic 官方开发者账号",
-  "publishedAt": "2026-11-25T07:07:00+08:00",
-  "summary": "Claude 官方实践指南：如何把 PR 的后续工作交给 Claude Ship，自己保持心流状态。",
-  "originalText": "A practical guide to shipping with Claude Code: how to hand off PR follow-up work to Claude Ship and stay in flow.",
-  "sourceNote": "",
-  "sourceUrl": "https://x.com/ClaudeDevs/status/2125365668463993091",
-  "sourceVerified": true,
-  "likes": 3000,
-  "reposts": 207,
-  "liked": false,
-  "reposted": false,
-  "bookmarked": false,
-  "timeVerified": true
  }
 ]
