@@ -4,7 +4,7 @@ import {
   ChevronLeft, ChevronRight, Copy, Heart, Menu, MessageSquareText, Monitor, Moon, Radio,
   Repeat2,
   Search, Sparkles, Sun, TrendingUp,
-  Users, X, Zap
+  Users, X
 } from "lucide-react";
 import postsData from "./data/posts.json";
 import peopleData from "./data/people.json";
@@ -249,7 +249,6 @@ function PostCard({ post, onAction, onSelectAuthor, onToast }: {
 
   return (
     <article className={`border-b border-[var(--line)] px-4 py-4 transition hover:bg-[var(--hover)] ${post.category === "reset" ? `border-l-[3px] ${PROVIDER_BORDER[post.provider]}` : ""}`}>
-      {post.pinned && <div className="mb-2 ml-[52px] flex items-center gap-1.5 text-[11px] font-semibold text-amber-500"><Zap size={14} />最新重置动态</div>}
       <div className="flex gap-3">
         <button onClick={() => onSelectAuthor(post.handle)} aria-label={`筛选 ${post.author}`} className="h-fit rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
           <Avatar name={post.author} provider={post.provider} avatarUrl={post.avatarUrl} />
@@ -321,7 +320,7 @@ export default function ResetRadar() {
     return () => window.clearInterval(timer);
   }, []);
 
-  const alertCount = useMemo(() => posts.filter((post) => post.category === "reset" && post.pinned).length, [posts]);
+  const alertCount = useMemo(() => posts.filter((post) => post.category === "reset").length, [posts]);
 
   const visiblePosts = useMemo(() => posts
     .filter((post) => activeNav !== "bookmarks" || post.bookmarked)
@@ -330,7 +329,7 @@ export default function ResetRadar() {
       const haystack = [post.author, post.handle, post.providerLabel, post.summary, post.originalText, post.sourceNote].join(" ").toLowerCase();
       return haystack.includes(query.trim().toLowerCase());
     })
-    .sort((a, b) => Number(Boolean(b.pinned)) - Number(Boolean(a.pinned)) || new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()),
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()),
   [posts, activeNav, selectedHandle, query]);
 
   const toggleAction = useCallback((id: string) => {
