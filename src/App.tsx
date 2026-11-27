@@ -582,23 +582,6 @@ function HistoryView() {
     </div>
   );
 
-  // Mobile: fixed-size cells, fewer weeks, big tap targets
-  const renderFixed = (cols: typeof allWeeks, cell: number, gap: number) => (
-    <div>
-      <div className="flex" style={{ marginLeft: 28, gap }}>
-        {monthLabelsOf(cols).map((m, i) => <div key={i} className="shrink-0 text-[10px] leading-4 text-[var(--muted)]" style={{ width: cell }}><span className="whitespace-nowrap">{m ? `${m}月` : ""}</span></div>)}
-      </div>
-      <div className="flex" style={{ gap: 8 }}>
-        <div className="grid shrink-0 text-[10px] text-[var(--muted)]" style={{ gridTemplateRows: `repeat(7, ${cell}px)`, gap }}>
-          {["一", "", "三", "", "五", "", "日"].map((w, i) => <div key={i} className="flex w-5 items-center">{w}</div>)}
-        </div>
-        <div className="grid" style={{ gridTemplateRows: `repeat(7, ${cell}px)`, gridAutoFlow: "column", gridAutoColumns: `${cell}px`, gap }}>
-          {cols.flatMap((col) => col.map((cellDay) => renderCell(cellDay, { width: cell, height: cell }, "rounded-[4px] transition")))}
-        </div>
-      </div>
-    </div>
-  );
-
   const selectedEvents = (eventsByDay.get(selected) ?? []).slice().sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
   const sortedHistory = HISTORY.slice().sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
 
@@ -608,7 +591,7 @@ function HistoryView() {
       <p className="mt-1 text-xs text-[var(--muted)]">仿 GitHub 贡献图的热力日历：每格是一天，颜色越深表示三家当天重置次数越多。点击格子查看当天详情。{`本站自 ${firstDataKey} 起收录，此前日期为未收录状态。`}所有时间统一为北京时间 UTC+8。</p>
 
       <div className="mt-4 rounded-2xl border border-[var(--line)] p-3">
-        <div className="overflow-x-auto sm:hidden">{renderFixed(allWeeks.slice(-12), 20, 3)}</div>
+        <div className="sm:hidden">{renderFluid(allWeeks.slice(-12))}</div>
         <div className="hidden sm:block">{renderFluid(allWeeks)}</div>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
           <span className="text-[10px] text-[var(--muted)]">{`共收录 ${totalResets} 次重置${busiest ? ` · 最多的一天 ${busiest[0]}（${busiest[1].length} 次）` : ""}`}</span>
