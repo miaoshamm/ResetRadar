@@ -340,7 +340,7 @@ export default function ResetRadar() {
 
   const copyBriefing = async () => {
     const lines = [
-      `御三家 AI 额度追踪快讯 · ${formatBeijingTime(now.toISOString())}（北京时间）`,
+      `ChatGPT、Claude、Gemini 额度重置快讯 · ${formatBeijingTime(now.toISOString())}（北京时间）`,
       ...(["google", "openai", "anthropic"] as Provider[]).map((key) => {
         const st = STATUS.providers[key];
         return `${PROVIDERS[key].product}：${st.summary}；24h 再重置概率约 ${st.probability24h}%（社区估算）`;
@@ -372,7 +372,7 @@ export default function ResetRadar() {
           <div>
             <div className="mb-7 flex items-center gap-3 px-3">
               <img src={`${import.meta.env.BASE_URL}logo.png`} alt="ResetRadar 标志" className="h-9 w-9 shrink-0 rounded-[10px]" />
-              <div className="hidden xl:block"><div className="text-lg font-black tracking-tight">ResetRadar</div><div className="text-[11px] text-[var(--muted)]">御三家额度重置追踪</div></div>
+              <div className="hidden xl:block"><div className="text-lg font-black tracking-tight">ResetRadar</div><div className="text-[11px] text-[var(--muted)]">ChatGPT、Claude、Gemini 额度重置追踪</div></div>
             </div>
             <nav className="space-y-1">
               <SidebarLink active={activeNav === "feed"} icon={Radio} label="实时监测流" count={alertCount} onClick={() => selectNav("feed")} />
@@ -382,7 +382,7 @@ export default function ResetRadar() {
               <SidebarLink active={activeNav === "bookmarks"} icon={Bookmark} label="已收藏情报" onClick={() => selectNav("bookmarks")} />
             </nav>
             <div className="mt-6 hidden rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-3.5 xl:block">
-              <div className="mb-2 text-[11px] font-bold text-[var(--muted)]">御三家 · 24h 重置概率</div>
+              <div className="mb-2 text-[11px] font-bold text-[var(--muted)]">ChatGPT、Claude、Gemini · 24h 概率</div>
               {(["google", "openai", "anthropic"] as Provider[]).map((key) => (
                 <div key={key} className="flex w-full items-center gap-2 py-1.5">
                   <ProviderMark provider={key} small />
@@ -404,12 +404,12 @@ export default function ResetRadar() {
           <header className="sticky top-0 z-30 border-b border-[var(--line)] bg-[var(--page)]/85 backdrop-blur-xl">
             <div className="flex items-center justify-between gap-3 px-4 py-3.5">
               <div className="min-w-0">
-                <div className="flex items-center gap-2"><h1 className="truncate text-base font-extrabold sm:text-lg">御三家 AI 额度重置追踪</h1><span className="inline-flex items-center rounded-full bg-[var(--surface-2)] px-2 py-1 text-[10px] font-semibold text-[var(--muted)]">{`更新于 ${formatBeijingTime(STATUS.updatedAt).slice(11, 16)}`}</span></div>
+                <div className="flex items-center gap-2"><h1 className="truncate text-base font-extrabold sm:text-lg">ChatGPT、Claude、Gemini 额度重置追踪</h1><span className="inline-flex items-center rounded-full bg-[var(--surface-2)] px-2 py-1 text-[10px] font-semibold text-[var(--muted)]">{`更新于 ${formatBeijingTime(STATUS.updatedAt).slice(11, 16)}`}</span></div>
                 <p className="mt-1 font-mono text-[10px] text-[var(--muted)]">{`${formatBeijingTime(now.toISOString())} BJT`}</p>
               </div>
               <div className="flex items-center gap-2">
                 <button onClick={() => setMode(mode === "system" ? "light" : mode === "light" ? "dark" : "system")} title={`外观：${mode === "system" ? "跟随系统" : mode === "light" ? "浅色" : "深色"}`} className="rounded-full p-2 text-[var(--muted)] transition hover:bg-[var(--hover)] hover:text-blue-500 xl:hidden">{mode === "system" ? <Monitor size={18} /> : mode === "light" ? <Sun size={18} /> : <Moon size={18} />}</button>
-                <button onClick={copyBriefing} title="复制御三家快讯" className="flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3 py-2 text-xs font-semibold transition hover:bg-[var(--hover)]"><Copy size={16} /><span className="hidden sm:inline">快讯</span></button>
+                <button onClick={copyBriefing} title="复制额度重置快讯" className="flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3 py-2 text-xs font-semibold transition hover:bg-[var(--hover)]"><Copy size={16} /><span className="hidden sm:inline">快讯</span></button>
               </div>
             </div>
 
@@ -437,7 +437,7 @@ export default function ResetRadar() {
         <aside className="hidden w-[340px] shrink-0 space-y-4 px-5 py-4 lg:block">
           <div className="sticky top-4 space-y-4">
             <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-4">
-              <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-extrabold">御三家状态</h3><span className="text-[10px] text-[var(--muted)]">3 PROVIDERS</span></div>
+              <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-extrabold">ChatGPT、Claude、Gemini 状态</h3><span className="text-[10px] text-[var(--muted)]">3 PROVIDERS</span></div>
               {(["google", "openai", "anthropic"] as Provider[]).map((key) => {
                 const st = STATUS.providers[key];
                 return <div key={key} className="-mx-2 flex w-full items-center gap-3 rounded-lg border-b border-[var(--line)] px-2 py-3 last:border-0">
@@ -605,7 +605,7 @@ function HistoryView() {
   return (
     <section className="p-4">
       <h2 className="text-base font-extrabold">重置日历</h2>
-      <p className="mt-1 text-xs text-[var(--muted)]">仿 GitHub 贡献图的热力日历：每格是一天，颜色越深表示御三家当天重置次数越多。点击格子查看当天详情。{`本站自 ${firstDataKey} 起收录，此前日期为未收录状态。`}所有时间统一为北京时间 UTC+8。</p>
+      <p className="mt-1 text-xs text-[var(--muted)]">仿 GitHub 贡献图的热力日历：每格是一天，颜色越深表示三家当天重置次数越多。点击格子查看当天详情。{`本站自 ${firstDataKey} 起收录，此前日期为未收录状态。`}所有时间统一为北京时间 UTC+8。</p>
 
       <div className="mt-4 rounded-2xl border border-[var(--line)] p-3">
         <div className="overflow-x-auto sm:hidden">{renderFixed(allWeeks.slice(-12), 20, 3)}</div>
