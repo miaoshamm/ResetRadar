@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-27T20:30:00+08:00",
+  "updatedAt": "2026-11-27T21:20:00+08:00",
   "providers": {
     "openai": {
       "probability24h": 10,
@@ -10,14 +10,14 @@
     },
     "google": {
       "probability24h": 30,
-      "probabilityReason": "一周内已重置 4 次、节奏三家最密，感恩节刚全量重置，用户反馈证实重置已落地；有传闻称 Antigravity 可能引入 banked reset，截图未证实，未计入概率。",
+      "probabilityReason": "一周内已重置 4 次、节奏三家最密，感恩节刚全量重置，用户反馈证实重置已落地；有网友称本月已第 6 次全量重置，但日期口径与感恩节重置对不上，未获官方证实，未计入概率。",
       "summary": "Google 一周内第四次重置 Antigravity 的 Gemini 额度，感恩节向全量用户发放。",
       "lastResetAt": "2026-11-26T12:00:00+08:00",
       "lastResetTitle": "感恩节全量重置 Gemini 额度"
     },
     "anthropic": {
       "probability24h": 10,
-      "probabilityReason": "最近一次重置是 11月9日的 Fable 订阅时长重置；Addy Osmani 提醒 11 月 10 日全量重置有效期至 12 月 10 日（已确认），暂无新重置暗示；有用户反馈撞上月限额，与重置无关。",
+      "probabilityReason": "最近一次重置是 11月9日的 Fable 订阅时长重置；Addy Osmani 提醒 11 月 10 日全量重置有效期至 12 月 10 日（已确认），暂无新重置暗示；有网友称 Claude 静默发 3 次 banked reset，与此前 1 次说法矛盾，未获官方证实，未计入概率。",
       "summary": "Anthropic 提醒 11 月 10 日发放的全量重置有效期至 12 月 10 日，暂无新重置动静。",
       "lastResetAt": "2026-11-09T12:00:00+08:00",
       "lastResetTitle": "Fable 5.2 按订阅时长发放重置"
