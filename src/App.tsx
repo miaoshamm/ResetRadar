@@ -416,6 +416,8 @@ export default function ResetRadar() {
 
           {activeNav === "feed" && <OverviewCards />}
 
+          {activeNav === "feed" && <div className="px-4 pt-4 lg:hidden"><SubscribeCard /></div>}
+
           {activeNav === "feed" || activeNav === "bookmarks" ? (
             <>
               <div className="border-b border-[var(--line)] px-4 py-3">
