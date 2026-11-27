@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-27T15:22:03+08:00",
+ "updatedAt": "2026-11-27T16:22:13+08:00",
  "providers": {
   "openai": {
    "probability24h": 10,
@@ -10,7 +10,7 @@
   },
   "google": {
    "probability24h": 30,
-   "probabilityReason": "一周内已重置 4 次、节奏三家最密，感恩节刚全量重置，但缓存改造频繁烧额度、常触发补偿性重置。",
+   "probabilityReason": "一周内已重置 4 次、节奏三家最密，感恩节刚全量重置，但缓存改造频繁烧额度、常触发补偿性重置；有传闻称 Antigravity 可能引入 banked reset，暂无证据，未计入概率。",
    "summary": "Google 一周内第四次重置 Antigravity 的 Gemini 额度，感恩节向全量用户发放。",
    "lastResetAt": "2026-11-26T12:00:00+08:00",
    "lastResetTitle": "感恩节全量重置 Gemini 额度"

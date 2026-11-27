@@ -305,6 +305,34 @@
     "sourceUrl": "https://x.com/OfficialLoganK/status/2126027327155163345"
   },
   {
+    "id": "codebynz-antigravity-banked-reset-20261127",
+    "provider": "google",
+    "providerLabel": "Gemini / Antigravity",
+    "category": "reset",
+    "author": "NZ",
+    "handle": "@CodeByNZ",
+    "role": "网友",
+    "avatarUrl": "https://pbs.twimg.com/profile_images/1967010283286659072/GcZfcy9J_200x200.jpg",
+    "publishedAt": "2026-11-27T02:29:00+08:00",
+    "timeVerified": true,
+    "summary": "称 Google 可能把 banked reset 做到 Antigravity：新版出现领取入口，达用量门槛可攒重置次数，未见截图或官方证实。",
+    "originalText": "Google might be bringing banked resets to Antigravity. People found a new claim route in the latest update, and it looks like you'd earn resets after hitting a usage threshold. OpenAI already did this with GPT-6.2. Google might be about to do the same with Neon.",
+    "likes": 31,
+    "reposts": 0,
+    "liked": false,
+    "reposted": false,
+    "bookmarked": false,
+    "sourceVerified": false,
+    "sourceNote": "传闻待核验：网友称新版 Antigravity 出现 banked reset 领取入口、达用量门槛可攒重置次数，未见截图或官方证实。",
+    "sourceUrl": "https://x.com/CodeByNZ/status/2126020481832693824",
+    "reset": {
+      "announcedAt": "2026-11-27T02:29:00+08:00",
+      "probability24h": 30,
+      "probabilityReason": "传闻称 Antigravity 可能引入 banked reset，未见截图或官方证实，对概率影响有限。",
+      "resetNote": "网友传闻，未经官方证实。"
+    }
+  },
+  {
     "id": "gdb-wwi-lesson-20261126",
     "provider": "openai",
     "providerLabel": "ChatGPT / Codex",
@@ -2196,33 +2224,5 @@
     "reposted": false,
     "bookmarked": false,
     "sourceUrl": "https://finchview.com/sama"
-  },
-  {
-    "id": "varun-tier-upgrade-reset-20261123",
-    "provider": "google",
-    "providerLabel": "Gemini / Antigravity",
-    "category": "reset",
-    "author": "Varun Mohan",
-    "handle": "@_mohansolo",
-    "role": "Antigravity 负责人",
-    "avatarUrl": "https://pbs.twimg.com/profile_images/1658293192549339138/V0Y7u33__200x200.jpg",
-    "publishedAt": "2026-11-23T12:00:00+08:00",
-    "summary": "因全层级模型升级，Antigravity 为所有人重置 Gemini 额度；付费 Pro 解锁 Carbon，Hydrogen 向全员开放。",
-    "originalText": "Resetting Gemini quotas for everyone on Antigravity because we're upgrading models across tiers! Paid Pro users will now have access to Carbon and Hydrogen will be available to all users as promised!",
-    "likes": 5600,
-    "reposts": 221,
-    "reset": {
-      "announcedAt": "2026-11-23T12:00:00+08:00",
-      "effectiveAt": "2026-11-23T12:00:00+08:00",
-      "probability24h": 30,
-      "probabilityReason": "升级期重置频繁，后续仍可能因缓存与容量调整追加重置。",
-      "resetNote": "同时取消付费 Pro 的独立 Argon 额度桶，容量并入通用 Gemini 桶。"
-    },
-    "sourceVerified": true,
-    "sourceNote": "",
-    "liked": false,
-    "reposted": false,
-    "bookmarked": false,
-    "sourceUrl": "https://finchview.com/_mohansolo"
   }
 ]
