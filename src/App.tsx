@@ -5,7 +5,7 @@ import {
   Repeat2,
   Search, Sparkles, Sun, TrendingUp,
   Users, X
-} from "lucide-react";
+, Mail } from "lucide-react";
 import postsData from "./data/posts.json";
 import peopleData from "./data/people.json";
 import historyData from "./data/history.json";
@@ -446,6 +446,7 @@ export default function ResetRadar() {
                 </div>;
               })}
             </div>
+            <SubscribeCard />
           </div>
         </aside>
       </div>
@@ -454,6 +455,40 @@ export default function ResetRadar() {
       <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-[var(--line)] bg-[var(--page)]/95 px-1 py-2 backdrop-blur-xl sm:hidden">
         {([{ id: "feed" as const, Icon: Radio, label: "动态" }, { id: "people" as const, Icon: Users, label: "人物" }, { id: "probability" as const, Icon: TrendingUp, label: "概率" }, { id: "history" as const, Icon: CalendarDays, label: "日历" }, { id: "bookmarks" as const, Icon: Bookmark, label: "收藏" }]).map(({ id, Icon, label }) => <button key={id} onClick={() => selectNav(id)} className={`flex flex-col items-center gap-1 py-1 text-[10px] font-semibold ${activeNav === id ? "text-blue-500" : "text-[var(--muted)]"}`}><Icon size={22} /><span>{label}</span></button>)}
       </nav>
+    </div>
+  );
+}
+
+function SubscribeCard() {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const [already, setAlready] = useState(false);
+  const submit = async () => {
+    const value = email.trim();
+    if (!value || state === "sending") return;
+    setState("sending");
+    try {
+      const r = await fetch("https://resetradar-subscribe.web-miaosha.workers.dev/subscribe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: value }) });
+      const d = await r.json();
+      if (d && d.ok) { setAlready(!!d.already); setState("done"); } else { setState("error"); }
+    } catch { setState("error"); }
+  };
+  return (
+    <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-4">
+      <div className="mb-2 flex items-center gap-2"><Mail size={15} className="text-blue-500" /><h3 className="text-sm font-extrabold">重置邮件提醒</h3></div>
+      <p className="text-xs leading-5 text-[var(--muted)]">任一家 24h 重置概率达到 75% 时，第一时间发邮件提醒你，提前安排额度，别让订阅费白白作废。</p>
+      {state === "done" ? (
+        <p className="mt-3 rounded-lg bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-500">{already ? "这个邮箱已经订阅过了" : "订阅成功，概率达标时见"}</p>
+      ) : (
+        <>
+          <div className="mt-3 flex gap-2">
+            <input type="email" value={email} onChange={(e) => { setEmail(e.target.value); if (state === "error") setState("idle"); }} onKeyDown={(e) => { if (e.key === "Enter") submit(); }} placeholder="你的邮箱" className="min-w-0 flex-1 rounded-full bg-[var(--page)] px-3 py-2 text-xs outline-none placeholder:text-[var(--muted)] focus:ring-1 focus:ring-blue-500" />
+            <button onClick={submit} disabled={state === "sending"} className="shrink-0 rounded-full bg-blue-500 px-4 py-2 text-xs font-bold text-white transition hover:bg-blue-600 disabled:opacity-60">{state === "sending" ? "提交中" : "订阅"}</button>
+          </div>
+          {state === "error" && <p className="mt-2 text-[11px] text-red-500">订阅没成功，检查一下邮箱格式再试</p>}
+          <p className="mt-2 text-[10px] text-[var(--muted)]">不发广告，每封提醒都带一键退订链接。</p>
+        </>
+      )}
     </div>
   );
 }
