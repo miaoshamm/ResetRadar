@@ -437,7 +437,7 @@ export default function ResetRadar() {
         <aside className="hidden w-[340px] shrink-0 space-y-4 px-5 py-4 lg:block">
           <div className="sticky top-4 space-y-4">
             <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-4">
-              <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-extrabold">ChatGPT、Claude、Gemini 状态</h3><span className="text-[10px] text-[var(--muted)]">3 PROVIDERS</span></div>
+              <div className="mb-3"><h3 className="text-sm font-extrabold">ChatGPT、Claude、Gemini 状态</h3></div>
               {(["google", "openai", "anthropic"] as Provider[]).map((key) => {
                 const st = STATUS.providers[key];
                 return <div key={key} className="-mx-2 flex w-full items-center gap-3 rounded-lg border-b border-[var(--line)] px-2 py-3 last:border-0">
