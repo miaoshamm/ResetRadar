@@ -24,6 +24,13 @@
     "avatarUrl": "https://pbs.twimg.com/profile_images/1347621377503711233/bHg3ipfD_200x200.jpg"
   },
   {
+    "name": "OpenAI Developers",
+    "handle": "@OpenAIDevs",
+    "provider": "openai",
+    "role": "OpenAI 官方开发者账号",
+    "initials": "OD"
+  },
+  {
     "name": "Varun Mohan",
     "handle": "@_mohansolo",
     "provider": "google",
@@ -48,6 +55,28 @@
     "avatarUrl": "https://pbs.twimg.com/profile_images/1990472620614053888/xrAu0wQL_200x200.jpg"
   },
   {
+    "name": "Google AI Studio",
+    "handle": "@GoogleAIStudio",
+    "provider": "google",
+    "role": "AI Studio 官方账号",
+    "initials": "AS"
+  },
+  {
+    "name": "Google AI",
+    "handle": "@GoogleAI",
+    "provider": "google",
+    "role": "Google AI 官方账号",
+    "initials": "GA"
+  },
+  {
+    "name": "Gemini App",
+    "handle": "@GeminiApp",
+    "provider": "google",
+    "role": "Gemini 官方产品账号",
+    "initials": "GM",
+    "avatarUrl": "https://pbs.twimg.com/profile_images/1940093473564073984/jiafRcO0_200x200.png"
+  },
+  {
     "name": "Claude Developers",
     "handle": "@ClaudeDevs",
     "provider": "anthropic",
@@ -69,5 +98,19 @@
     "provider": "anthropic",
     "role": "开发者关系",
     "initials": "AA"
+  },
+  {
+    "name": "Lydia Hallie",
+    "handle": "@lydiahallie",
+    "provider": "anthropic",
+    "role": "Anthropic 技术团队",
+    "initials": "LH"
+  },
+  {
+    "name": "Claude",
+    "handle": "@claudeai",
+    "provider": "anthropic",
+    "role": "Claude 官方产品账号",
+    "initials": "CL"
   }
 ]
