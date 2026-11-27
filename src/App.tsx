@@ -579,7 +579,7 @@ function HistoryView() {
     return map;
   }, []);
 
-  // GitHub-style heatmap: last 20 weeks, columns = weeks, rows = Mon..Sun (Beijing dates)
+  // GitHub-style heatmap: columns = weeks, rows = Mon..Sun (Beijing dates)
   const WEEKS = 20;
   const [ty, tm, td] = todayKey.split("-").map(Number);
   const todayDate = new Date(Date.UTC(ty, tm - 1, td));
@@ -587,7 +587,7 @@ function HistoryView() {
   const endSunday = new Date(todayDate.getTime() + (6 - dowMon) * 86400000);
   const startMonday = new Date(endSunday.getTime() - (WEEKS * 7 - 1) * 86400000);
   const keyOf = (d: Date) => d.toISOString().slice(0, 10);
-  const weeks: { key: string; future: boolean }[][] = [];
+  const allWeeks: { key: string; future: boolean }[][] = [];
   for (let w = 0; w < WEEKS; w++) {
     const col: { key: string; future: boolean }[] = [];
     for (let r = 0; r < 7; r++) {
@@ -595,18 +595,48 @@ function HistoryView() {
       const key = keyOf(d);
       col.push({ key, future: key > todayKey });
     }
-    weeks.push(col);
+    allWeeks.push(col);
   }
-  const monthLabels = weeks.map((col, i) => {
-    const m = Number(col[0].key.slice(5, 7));
-    if (i === 0) return m;
-    const prev = Number(weeks[i - 1][0].key.slice(5, 7));
-    return m !== prev ? m : null;
-  });
   const levelOf = (count: number) => (count >= 4 ? 4 : count);
   const LEVEL_BG = ["rgba(128,128,128,0.18)", "rgba(29,155,240,0.35)", "rgba(29,155,240,0.55)", "rgba(29,155,240,0.8)", "rgba(29,155,240,1)"];
   const totalResets = HISTORY.length;
   const busiest = [...eventsByDay.entries()].sort((a, b) => b[1].length - a[1].length)[0];
+
+  const renderHeatmap = (cols: typeof allWeeks, cell: number, gap: number) => {
+    const monthLabels = cols.map((col, i) => {
+      const m = Number(col[0].key.slice(5, 7));
+      if (i === 0) return m;
+      const prev = Number(cols[i - 1][0].key.slice(5, 7));
+      return m !== prev ? m : null;
+    });
+    return (
+      <div>
+        <div className="flex" style={{ marginLeft: 28, gap }}>
+          {monthLabels.map((m, i) => <div key={i} className="shrink-0 text-[10px] leading-4 text-[var(--muted)]" style={{ width: cell }}>{m ? `${m}月` : ""}</div>)}
+        </div>
+        <div className="flex" style={{ gap: 8 }}>
+          <div className="grid shrink-0 text-[9px] text-[var(--muted)]" style={{ gridTemplateRows: `repeat(7, ${cell}px)`, gap }}>
+            {["一", "", "三", "", "五", "", "日"].map((w, i) => <div key={i} className="flex w-5 items-center">{w}</div>)}
+          </div>
+          <div className="grid" style={{ gridTemplateRows: `repeat(7, ${cell}px)`, gridAutoFlow: "column", gridAutoColumns: `${cell}px`, gap }}>
+            {cols.flatMap((col) => col.map((cellDay) => {
+              const events = eventsByDay.get(cellDay.key) ?? [];
+              const count = events.length;
+              const providers = [...new Set(events.map((e) => e.provider))];
+              const isSelected = cellDay.key === selected;
+              const isToday = cellDay.key === todayKey;
+              const tip = count ? `${cellDay.key} · ${count} 次重置（${providers.map((pr) => PROVIDERS[pr].name).join("、")}）` : `${cellDay.key} · 无重置`;
+              return (
+                <button key={cellDay.key} title={tip} aria-label={tip} disabled={cellDay.future} onClick={() => setSelected(cellDay.key)}
+                  className={`rounded-[4px] transition ${cellDay.future ? "opacity-30" : "hover:ring-1 hover:ring-[var(--muted)] active:scale-95"} ${isSelected ? "ring-2 ring-[#1d9bf0]" : ""} ${isToday ? "ring-1 ring-[var(--text)]" : ""}`}
+                  style={{ width: cell, height: cell, backgroundColor: LEVEL_BG[levelOf(count)] }} />
+              );
+            }))}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   const selectedEvents = (eventsByDay.get(selected) ?? []).slice().sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
   const sortedHistory = HISTORY.slice().sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
@@ -617,36 +647,13 @@ function HistoryView() {
       <p className="mt-1 text-xs text-[var(--muted)]">仿 GitHub 贡献图的热力日历：每格是一天，颜色越深表示御三家当天重置次数越多。点击格子查看当天详情。所有时间统一为北京时间 UTC+8。</p>
 
       <div className="mt-4 rounded-2xl border border-[var(--line)] p-3">
-        <div className="overflow-x-auto">
-          <div className="min-w-[540px]">
-            <div className="ml-7 flex gap-[3px]">
-              {monthLabels.map((m, i) => <div key={i} className="w-[13px] shrink-0 text-[10px] leading-4 text-[var(--muted)]">{m ? `${m}月` : ""}</div>)}
-            </div>
-            <div className="flex gap-2">
-              <div className="grid shrink-0 grid-rows-7 gap-[3px] text-[9px] leading-[13px] text-[var(--muted)]" style={{ gridTemplateRows: "repeat(7, 13px)" }}>
-                {["一", "", "三", "", "五", "", "日"].map((w, i) => <div key={i} className="flex w-5 items-center">{w}</div>)}
-              </div>
-              <div className="grid gap-[3px]" style={{ gridTemplateRows: "repeat(7, 13px)", gridAutoFlow: "column", gridAutoColumns: "13px" }}>
-                {weeks.flatMap((col) => col.map((cell) => {
-                  const events = eventsByDay.get(cell.key) ?? [];
-                  const count = events.length;
-                  const providers = [...new Set(events.map((e) => e.provider))];
-                  const isSelected = cell.key === selected;
-                  const isToday = cell.key === todayKey;
-                  const tip = count ? `${cell.key} · ${count} 次重置（${providers.map((pr) => PROVIDERS[pr].name).join("、")}）` : `${cell.key} · 无重置`;
-                  return (
-                    <button key={cell.key} title={tip} aria-label={tip} disabled={cell.future} onClick={() => setSelected(cell.key)}
-                      className={`h-[13px] w-[13px] rounded-[3px] transition ${cell.future ? "opacity-30" : "hover:ring-1 hover:ring-[var(--muted)]"} ${isSelected ? "ring-2 ring-[#1d9bf0]" : ""} ${isToday ? "ring-1 ring-[var(--text)]" : ""}`}
-                      style={{ backgroundColor: LEVEL_BG[levelOf(count)] }} />
-                  );
-                }))}
-              </div>
-            </div>
-            <div className="mt-2 flex items-center justify-between">
-              <span className="text-[10px] text-[var(--muted)]">{`近 ${WEEKS} 周共 ${totalResets} 次重置${busiest ? ` · 最多的一天 ${busiest[0]}（${busiest[1].length} 次）` : ""}`}</span>
-              <span className="flex items-center gap-1 text-[10px] text-[var(--muted)]">少 {LEVEL_BG.map((bg, i) => <span key={i} className="inline-block h-[10px] w-[10px] rounded-[2px]" style={{ backgroundColor: bg }} />)} 多</span>
-            </div>
-          </div>
+        {/* Mobile: fewer weeks, bigger tap targets */}
+        <div className="overflow-x-auto sm:hidden">{renderHeatmap(allWeeks.slice(-12), 20, 3)}</div>
+        {/* Desktop: full 20 weeks */}
+        <div className="hidden overflow-x-auto sm:block">{renderHeatmap(allWeeks, 14, 3)}</div>
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+          <span className="text-[10px] text-[var(--muted)]">{`近 ${WEEKS} 周共 ${totalResets} 次重置${busiest ? ` · 最多的一天 ${busiest[0]}（${busiest[1].length} 次）` : ""}`}</span>
+          <span className="flex items-center gap-1 text-[10px] text-[var(--muted)]">少 {LEVEL_BG.map((bg, i) => <span key={i} className="inline-block h-[10px] w-[10px] rounded-[2px]" style={{ backgroundColor: bg }} />)} 多</span>
         </div>
       </div>
 
