@@ -404,7 +404,7 @@ export default function ResetRadar() {
           <header className="sticky top-0 z-30 border-b border-[var(--line)] bg-[var(--page)]/85 backdrop-blur-xl">
             <div className="flex items-center justify-between gap-3 px-4 py-3.5">
               <div className="min-w-0">
-                <div className="flex items-center gap-2"><h1 className="truncate text-base font-extrabold sm:text-lg">ChatGPT、Claude、Gemini 额度重置追踪</h1><span className="inline-flex items-center rounded-full bg-[var(--surface-2)] px-2 py-1 text-[10px] font-semibold text-[var(--muted)]">{`更新于 ${formatBeijingTime(STATUS.updatedAt).slice(11, 16)}`}</span></div>
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1"><h1 className="text-[15px] font-extrabold leading-snug sm:text-lg">ChatGPT、Claude、Gemini 额度重置追踪</h1><span className="inline-flex shrink-0 items-center whitespace-nowrap rounded-full bg-[var(--surface-2)] px-2 py-1 text-[10px] font-semibold text-[var(--muted)]">{`更新于 ${formatBeijingTime(STATUS.updatedAt).slice(11, 16)}`}</span></div>
                 <p className="mt-1 font-mono text-[10px] text-[var(--muted)]">{`${formatBeijingTime(now.toISOString())} BJT`}</p>
               </div>
               <div className="flex items-center gap-2">
@@ -467,7 +467,7 @@ function OverviewCards() {
         <h2 className="text-sm font-extrabold">24h 重置概率</h2>
         <span className="shrink-0 text-[10px] text-[var(--muted)]">{`更新于 ${formatBeijingTime(STATUS.updatedAt)}`}</span>
       </div>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
         {(["google", "openai", "anthropic"] as Provider[]).map((key) => {
           const st = STATUS.providers[key];
           return (
@@ -475,7 +475,7 @@ function OverviewCards() {
               <span className="flex items-center gap-1.5"><ProviderMark provider={key} /><span className="truncate text-[11px] font-bold">{PROVIDERS[key].name}</span></span>
               <span className="mt-2 block font-mono text-2xl font-black leading-none text-emerald-500">~{st.probability24h}%</span>
               <span className="mt-2 block h-1.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/15"><span className="block h-full rounded-full bg-emerald-500" style={{ width: `${st.probability24h}%` }} /></span>
-              <span className="mt-2 line-clamp-2 hidden min-h-8 text-[10px] leading-4 text-[var(--muted)] min-[420px]:block">{st.summary}</span>
+              <span className="mt-2 line-clamp-2 min-h-8 text-[10px] leading-4 text-[var(--muted)]">{st.summary}</span>
               <span className="mt-1.5 block truncate text-[9px] text-[var(--muted)]">最近重置 {st.lastResetAt.slice(5, 10)}</span>
             </div>
           );
