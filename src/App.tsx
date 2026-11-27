@@ -480,7 +480,7 @@ function SubscribeCard() {
       <div className="mb-2 flex items-center gap-2"><Mail size={15} className="text-blue-500" /><h3 className="text-sm font-extrabold">重置邮件提醒</h3></div>
       <p className="text-xs leading-5 text-[var(--muted)]">任一家 24h 重置概率达到 75% 时，第一时间发邮件提醒你，提前安排额度，别让订阅费白白作废。</p>
       {state === "done" ? (
-        <p className="mt-3 rounded-lg bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-500">{already ? "这个邮箱已经订阅过了" : "还差一步：确认邮件几分钟内发到你的邮箱，点里面的确认链接才算订阅成功（链接 24 小时有效）"}</p>
+        <p className="mt-3 rounded-lg bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-500">{already ? "这个邮箱已经订阅过了" : "还差一步：确认邮件已经发到你的邮箱，点里面的确认链接才算订阅成功（链接 24 小时有效）"}</p>
       ) : (
         <>
           <div className="mt-3 flex gap-2">
