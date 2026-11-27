@@ -1,5 +1,33 @@
 [
  {
+  "id": "rudraxx13-claude-duet-reset-20261127",
+  "provider": "anthropic",
+  "providerLabel": "Claude / Claude Code",
+  "category": "reset",
+  "author": "rudraxx13",
+  "handle": "@rudraxx13",
+  "role": "网友",
+  "avatarUrl": "",
+  "publishedAt": "2026-11-27T14:16:00+08:00",
+  "timeVerified": true,
+  "summary": "称 Claude Duet 受邀用户中 Pro 得 3 次免费重置、Max 或 Ultra 得 1 次，未见官方账号证实。",
+  "originalText": "Claude Duet 受邀用户：Pro 得 3 次免费重置，Max 或 Ultra 得 1 次。（Grok 搜索摘要，原文待核验）",
+  "likes": 0,
+  "reposts": 0,
+  "liked": false,
+  "reposted": false,
+  "bookmarked": false,
+  "sourceVerified": false,
+  "sourceNote": "传闻待核验：网友称 Claude Duet 受邀用户按套餐获不同次数免费重置，未见官方账号证实；作者头像暂未拿到。经 Grok X 搜索核对原文与发布时间。",
+  "sourceUrl": "https://x.com/rudraxx13/status/2126198493257888015",
+  "reset": {
+   "announcedAt": "2026-11-27T14:16:00+08:00",
+   "probability24h": 10,
+   "probabilityReason": "网友传闻称 Duet 受邀用户按套餐获不同次数重置，未见官方证实，对概率影响有限。",
+   "resetNote": "网友传闻，未经官方证实。"
+  }
+ },
+ {
   "id": "mohansolo-auto-permissions-20261127",
   "provider": "google",
   "providerLabel": "Gemini / Antigravity",
@@ -2196,26 +2224,5 @@
   "reposted": false,
   "bookmarked": false,
   "sourceUrl": "https://finchview.com/_mohansolo"
- },
- {
-  "id": "bcherny-20261123-45",
-  "provider": "anthropic",
-  "providerLabel": "Claude / Claude Code",
-  "category": "person",
-  "author": "Boris Cherny",
-  "handle": "@bcherny",
-  "avatarUrl": "https://pbs.twimg.com/profile_images/1902044548936953856/J2jeik0t_200x200.jpg",
-  "role": "Claude Code 核心团队",
-  "publishedAt": "2026-11-23T12:00:00+08:00",
-  "summary": "Boris：一年前 Opus 4.5 成为首个写下他 100% 代码的模型；今天 Claude Ship 以 beta 登陆 Team 与 Enterprise，帮团队把 PR 真正发出去。",
-  "originalText": "A year ago we launched Opus 4.5, the first model to write 100% of my code. Shipping PRs hasn't caught up, so today we're launching Claude Ship in beta for Team and Enterprise. I use it all day every day and can't imagine shipping without it. (Quoting @ClaudeDevs: Introducing Claude Ship (beta): Clau",
-  "sourceNote": "经 X 镜像站（FinchView）核对原文；镜像仅显示发布日期，精确时刻待核验。",
-  "sourceUrl": "https://finchview.com/bcherny",
-  "sourceVerified": true,
-  "likes": 8000,
-  "reposts": 263,
-  "liked": false,
-  "reposted": false,
-  "bookmarked": false
  }
 ]
