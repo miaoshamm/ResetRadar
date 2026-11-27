@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Activity, AlertTriangle, Bookmark, CalendarDays, Check, CheckCircle2,
-  ChevronLeft, ChevronRight, Copy, Menu, MessageSquareText, Monitor, Moon, Radio,
+  ChevronLeft, ChevronRight, Copy, Heart, Menu, MessageSquareText, Monitor, Moon, Radio,
+  Repeat2,
   Search, Sparkles, Sun, TrendingUp,
   Users, X, Zap
 } from "lucide-react";
@@ -276,6 +277,8 @@ function PostCard({ post, onAction, onSelectAuthor, onToast }: {
           {post.category === "reset" && <ResetDetails post={post} />}
 
           <div className="mt-4 flex max-w-[380px] items-center justify-between text-xs text-[var(--muted)]">
+            <span className="inline-flex items-center gap-1.5"><Repeat2 size={18} />{post.reposts.toLocaleString()}</span>
+            <span className="inline-flex items-center gap-1.5"><Heart size={18} />{post.likes.toLocaleString()}</span>
             <button onClick={() => onAction(post.id)} className={`inline-flex items-center gap-1.5 transition hover:text-blue-500 ${post.bookmarked ? "font-bold text-blue-500" : ""}`}><Bookmark size={18} fill={post.bookmarked ? "currentColor" : "none"} />{post.bookmarked ? "已收藏" : "收藏"}</button>
             <button onClick={copyPost} className="inline-flex items-center gap-1.5 transition hover:text-blue-500"><Copy size={18} />复制</button>
           </div>
