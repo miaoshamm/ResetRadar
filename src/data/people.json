@@ -1,116 +1,117 @@
 [
-  {
-    "name": "Tibo",
-    "handle": "@thsottiaux",
-    "provider": "openai",
-    "role": "ChatGPT / Codex",
-    "initials": "TB",
-    "avatarUrl": "https://pbs.twimg.com/profile_images/2093807917833281537/2yBgpwVV_200x200.jpg"
-  },
-  {
-    "name": "Sam Altman",
-    "handle": "@sama",
-    "provider": "openai",
-    "role": "OpenAI CEO",
-    "initials": "SA",
-    "avatarUrl": "https://pbs.twimg.com/profile_images/2046764873200394240/r7BxVezs_200x200.jpg"
-  },
-  {
-    "name": "Greg Brockman",
-    "handle": "@gdb",
-    "provider": "openai",
-    "role": "OpenAI 联合创始人",
-    "initials": "GB",
-    "avatarUrl": "https://pbs.twimg.com/profile_images/1347621377503711233/bHg3ipfD_200x200.jpg"
-  },
-  {
-    "name": "OpenAI Developers",
-    "handle": "@OpenAIDevs",
-    "provider": "openai",
-    "role": "OpenAI 官方开发者账号",
-    "initials": "OD"
-  },
-  {
-    "name": "Varun Mohan",
-    "handle": "@_mohansolo",
-    "provider": "google",
-    "role": "Antigravity 负责人",
-    "initials": "VM",
-    "avatarUrl": "https://pbs.twimg.com/profile_images/1658293192549339138/V0Y7u33__200x200.jpg"
-  },
-  {
-    "name": "Logan Kilpatrick",
-    "handle": "@OfficialLoganK",
-    "provider": "google",
-    "role": "Gemini 产品负责人",
-    "initials": "LK",
-    "avatarUrl": "https://pbs.twimg.com/profile_images/1943787288955084800/QOl7OJMc_200x200.jpg"
-  },
-  {
-    "name": "Demis Hassabis",
-    "handle": "@demishassabis",
-    "provider": "google",
-    "role": "Google DeepMind CEO",
-    "initials": "DH",
-    "avatarUrl": "https://pbs.twimg.com/profile_images/1990472620614053888/xrAu0wQL_200x200.jpg"
-  },
-  {
-    "name": "Google AI Studio",
-    "handle": "@GoogleAIStudio",
-    "provider": "google",
-    "role": "AI Studio 官方账号",
-    "initials": "AS"
-  },
-  {
-    "name": "Google AI",
-    "handle": "@GoogleAI",
-    "provider": "google",
-    "role": "Google AI 官方账号",
-    "initials": "GA"
-  },
-  {
-    "name": "Gemini App",
-    "handle": "@GeminiApp",
-    "provider": "google",
-    "role": "Gemini 官方产品账号",
-    "initials": "GM",
-    "avatarUrl": "https://pbs.twimg.com/profile_images/1940093473564073984/jiafRcO0_200x200.png"
-  },
-  {
-    "name": "Claude Developers",
-    "handle": "@ClaudeDevs",
-    "provider": "anthropic",
-    "role": "Anthropic 官方开发者账号",
-    "initials": "CD",
-    "avatarUrl": "https://pbs.twimg.com/profile_images/2044472418815893504/xf14RxM8_200x200.png"
-  },
-  {
-    "name": "Boris Cherny",
-    "handle": "@bcherny",
-    "provider": "anthropic",
-    "role": "Claude Code 核心团队",
-    "initials": "BC",
-    "avatarUrl": "https://pbs.twimg.com/profile_images/1902044548936953856/J2jeik0t_200x200.jpg"
-  },
-  {
-    "name": "Alex Albert",
-    "handle": "@alexalbert__",
-    "provider": "anthropic",
-    "role": "开发者关系",
-    "initials": "AA"
-  },
-  {
-    "name": "Lydia Hallie",
-    "handle": "@lydiahallie",
-    "provider": "anthropic",
-    "role": "Anthropic 技术团队",
-    "initials": "LH"
-  },
-  {
-    "name": "Claude",
-    "handle": "@claudeai",
-    "provider": "anthropic",
-    "role": "Claude 官方产品账号",
-    "initials": "CL"
-  }
+ {
+  "name": "Tibo",
+  "handle": "@thsottiaux",
+  "provider": "openai",
+  "role": "ChatGPT / Codex",
+  "initials": "TB",
+  "avatarUrl": "https://pbs.twimg.com/profile_images/2093807917833281537/2yBgpwVV_200x200.jpg"
+ },
+ {
+  "name": "Sam Altman",
+  "handle": "@sama",
+  "provider": "openai",
+  "role": "OpenAI CEO",
+  "initials": "SA",
+  "avatarUrl": "https://pbs.twimg.com/profile_images/2046764873200394240/r7BxVezs_200x200.jpg"
+ },
+ {
+  "name": "Greg Brockman",
+  "handle": "@gdb",
+  "provider": "openai",
+  "role": "OpenAI 联合创始人",
+  "initials": "GB",
+  "avatarUrl": "https://pbs.twimg.com/profile_images/1347621377503711233/bHg3ipfD_200x200.jpg"
+ },
+ {
+  "name": "OpenAI Developers",
+  "handle": "@OpenAIDevs",
+  "provider": "openai",
+  "role": "OpenAI 官方开发者账号",
+  "initials": "OD",
+  "avatarUrl": "https://pbs.twimg.com/profile_images/2022002720971096064/l3Kyt4qt_200x200.jpg"
+ },
+ {
+  "name": "Varun Mohan",
+  "handle": "@_mohansolo",
+  "provider": "google",
+  "role": "Antigravity 负责人",
+  "initials": "VM",
+  "avatarUrl": "https://pbs.twimg.com/profile_images/1658293192549339138/V0Y7u33__200x200.jpg"
+ },
+ {
+  "name": "Logan Kilpatrick",
+  "handle": "@OfficialLoganK",
+  "provider": "google",
+  "role": "Gemini 产品负责人",
+  "initials": "LK",
+  "avatarUrl": "https://pbs.twimg.com/profile_images/1943787288955084800/QOl7OJMc_200x200.jpg"
+ },
+ {
+  "name": "Demis Hassabis",
+  "handle": "@demishassabis",
+  "provider": "google",
+  "role": "Google DeepMind CEO",
+  "initials": "DH",
+  "avatarUrl": "https://pbs.twimg.com/profile_images/1990472620614053888/xrAu0wQL_200x200.jpg"
+ },
+ {
+  "name": "Google AI Studio",
+  "handle": "@GoogleAIStudio",
+  "provider": "google",
+  "role": "AI Studio 官方账号",
+  "initials": "AS"
+ },
+ {
+  "name": "Google AI",
+  "handle": "@GoogleAI",
+  "provider": "google",
+  "role": "Google AI 官方账号",
+  "initials": "GA"
+ },
+ {
+  "name": "Gemini App",
+  "handle": "@GeminiApp",
+  "provider": "google",
+  "role": "Gemini 官方产品账号",
+  "initials": "GM",
+  "avatarUrl": "https://pbs.twimg.com/profile_images/1940093473564073984/jiafRcO0_200x200.png"
+ },
+ {
+  "name": "Claude Developers",
+  "handle": "@ClaudeDevs",
+  "provider": "anthropic",
+  "role": "Anthropic 官方开发者账号",
+  "initials": "CD",
+  "avatarUrl": "https://pbs.twimg.com/profile_images/2044472418815893504/xf14RxM8_200x200.png"
+ },
+ {
+  "name": "Boris Cherny",
+  "handle": "@bcherny",
+  "provider": "anthropic",
+  "role": "Claude Code 核心团队",
+  "initials": "BC",
+  "avatarUrl": "https://pbs.twimg.com/profile_images/1902044548936953856/J2jeik0t_200x200.jpg"
+ },
+ {
+  "name": "Alex Albert",
+  "handle": "@alexalbert__",
+  "provider": "anthropic",
+  "role": "开发者关系",
+  "initials": "AA"
+ },
+ {
+  "name": "Lydia Hallie",
+  "handle": "@lydiahallie",
+  "provider": "anthropic",
+  "role": "Anthropic 技术团队",
+  "initials": "LH"
+ },
+ {
+  "name": "Claude",
+  "handle": "@claudeai",
+  "provider": "anthropic",
+  "role": "Claude 官方产品账号",
+  "initials": "CL"
+ }
 ]
