@@ -353,7 +353,7 @@ export default function ResetRadar() {
     try {
       // TODO: Replace with API call, e.g. await api.get("/api/posts")
       await new Promise((resolve) => window.setTimeout(resolve, 350));
-      showToast(`数据由 Muse 每 12 小时自动拉取更新 · 上次更新 ${formatBeijingTime(STATUS.updatedAt)}`);
+      showToast(`数据由 Muse 每小时自动拉取更新 · 上次更新 ${formatBeijingTime(STATUS.updatedAt)}`);
     } catch {
       showToast("同步失败，请稍后重试");
     } finally {
@@ -518,7 +518,7 @@ export default function ResetRadar() {
 }
 
 function OverviewCards({ onSelect }: { onSelect: (provider: Provider) => void }) {
-  const nextUpdate = formatBeijingTime(new Date(new Date(STATUS.updatedAt).getTime() + 12 * 3600 * 1000).toISOString());
+  const nextUpdate = formatBeijingTime(new Date(new Date(STATUS.updatedAt).getTime() + 1 * 3600 * 1000).toISOString());
   return (
     <section className="border-b border-[var(--line)] px-4 py-3">
       <div className="mb-2.5 flex items-center justify-between gap-2">
@@ -539,7 +539,7 @@ function OverviewCards({ onSelect }: { onSelect: (provider: Provider) => void })
           );
         })}
       </div>
-      <p className="mt-2 text-[10px] leading-4 text-[var(--muted)]">概率为社区公开信息估算，不代表官方承诺。数据每 12 小时自动更新，下一次约 {nextUpdate}。</p>
+      <p className="mt-2 text-[10px] leading-4 text-[var(--muted)]">概率为社区公开信息估算，不代表官方承诺。数据每小时自动更新，下一次约 {nextUpdate}。</p>
     </section>
   );
 }
@@ -554,7 +554,7 @@ function PeopleView({ followed, onToggle, onSelect }: { followed: Record<string,
 
 function ProbabilityView() {
   const items = (["openai", "google", "anthropic"] as Provider[]).map((provider) => ({ provider, st: STATUS.providers[provider] }));
-  return <section className="space-y-3 p-4"><div><h2 className="text-base font-extrabold">未来 24h 再重置概率</h2><p className="mt-1 text-xs leading-5 text-[var(--muted)]">基于公开信息与历史节奏的社区估算，不代表官方承诺。{`数据更新于 ${formatBeijingTime(STATUS.updatedAt)}（北京时间），由 Muse 每 12 小时拉取更新。`}</p></div>{items.map(({ provider, st }) => <div key={provider} className="rounded-2xl border border-[var(--line)] p-4"><div className="flex items-center gap-2"><ProviderMark provider={provider} /><strong className="flex-1 text-sm">{PROVIDERS[provider].product}</strong><strong className="font-mono text-lg text-emerald-500">~{st.probability24h}%</strong></div><div className="mt-3 h-1.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/15"><div className="h-full rounded-full bg-emerald-500" style={{ width: `${st.probability24h}%` }} /></div><p className="mt-3 text-xs font-semibold leading-6">{st.summary}</p><p className="mt-1 text-xs leading-6 text-[var(--muted)]">判断依据：{st.probabilityReason}</p><p className="mt-1 text-[11px] leading-5 text-[var(--muted)]">最近一次重置：{st.lastResetTitle} · {formatBeijingTime(st.lastResetAt)}</p></div>)}</section>;
+  return <section className="space-y-3 p-4"><div><h2 className="text-base font-extrabold">未来 24h 再重置概率</h2><p className="mt-1 text-xs leading-5 text-[var(--muted)]">基于公开信息与历史节奏的社区估算，不代表官方承诺。{`数据更新于 ${formatBeijingTime(STATUS.updatedAt)}（北京时间），由 Muse 每小时拉取更新。`}</p></div>{items.map(({ provider, st }) => <div key={provider} className="rounded-2xl border border-[var(--line)] p-4"><div className="flex items-center gap-2"><ProviderMark provider={provider} /><strong className="flex-1 text-sm">{PROVIDERS[provider].product}</strong><strong className="font-mono text-lg text-emerald-500">~{st.probability24h}%</strong></div><div className="mt-3 h-1.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/15"><div className="h-full rounded-full bg-emerald-500" style={{ width: `${st.probability24h}%` }} /></div><p className="mt-3 text-xs font-semibold leading-6">{st.summary}</p><p className="mt-1 text-xs leading-6 text-[var(--muted)]">判断依据：{st.probabilityReason}</p><p className="mt-1 text-[11px] leading-5 text-[var(--muted)]">最近一次重置：{st.lastResetTitle} · {formatBeijingTime(st.lastResetAt)}</p></div>)}</section>;
 }
 
 function HistoryView() {
