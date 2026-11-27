@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-27T11:51:44+08:00",
+ "updatedAt": "2026-11-27T12:26:00+08:00",
  "providers": {
   "openai": {
    "probability24h": 10,
@@ -17,8 +17,8 @@
   },
   "anthropic": {
    "probability24h": 10,
-   "probabilityReason": "最近一次重置是 11月9日的 Fable 订阅时长重置，此后官方与核心成员均无新的重置暗示；有用户提醒称 Max/Ultra/Team 月度额度将于 12 月 10 日到期，属未核实传闻。",
-   "summary": "Anthropic 自 11月9日 Fable 重置后以产品发布为主，暂无新动静。",
+   "probabilityReason": "最近一次重置是 11月9日的 Fable 订阅时长重置；Addy Osmani 提醒 11 月 10 日全量重置有效期至 12 月 10 日（已确认），暂无新重置暗示。",
+   "summary": "Anthropic 提醒 11 月 10 日发放的全量重置有效期至 12 月 10 日，暂无新重置动静。",
    "lastResetAt": "2026-11-09T12:00:00+08:00",
    "lastResetTitle": "Fable 5.2 按订阅时长发放重置"
   }
