@@ -568,7 +568,6 @@ function ProbabilityView() {
 
 function HistoryView() {
   const todayKey = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Shanghai" });
-  const [cursor, setCursor] = useState(() => { const d = new Date(); return { y: d.getFullYear(), m: d.getMonth() }; });
   const [selected, setSelected] = useState(todayKey);
 
   const eventsByDay = useMemo(() => {
@@ -580,42 +579,74 @@ function HistoryView() {
     return map;
   }, []);
 
-  const firstWeekday = (new Date(cursor.y, cursor.m, 1).getDay() + 6) % 7; // Monday-first offset
-  const daysInMonth = new Date(cursor.y, cursor.m + 1, 0).getDate();
-  const cells: (number | null)[] = [...Array(firstWeekday).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
-  const dayKey = (d: number) => `${cursor.y}-${String(cursor.m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-  const moveMonth = (delta: number) => setCursor((c) => { const t = c.m + delta; return { y: c.y + Math.floor(t / 12), m: ((t % 12) + 12) % 12 }; });
+  // GitHub-style heatmap: last 20 weeks, columns = weeks, rows = Mon..Sun (Beijing dates)
+  const WEEKS = 20;
+  const [ty, tm, td] = todayKey.split("-").map(Number);
+  const todayDate = new Date(Date.UTC(ty, tm - 1, td));
+  const dowMon = (todayDate.getUTCDay() + 6) % 7;
+  const endSunday = new Date(todayDate.getTime() + (6 - dowMon) * 86400000);
+  const startMonday = new Date(endSunday.getTime() - (WEEKS * 7 - 1) * 86400000);
+  const keyOf = (d: Date) => d.toISOString().slice(0, 10);
+  const weeks: { key: string; future: boolean }[][] = [];
+  for (let w = 0; w < WEEKS; w++) {
+    const col: { key: string; future: boolean }[] = [];
+    for (let r = 0; r < 7; r++) {
+      const d = new Date(startMonday.getTime() + (w * 7 + r) * 86400000);
+      const key = keyOf(d);
+      col.push({ key, future: key > todayKey });
+    }
+    weeks.push(col);
+  }
+  const monthLabels = weeks.map((col, i) => {
+    const m = Number(col[0].key.slice(5, 7));
+    if (i === 0) return m;
+    const prev = Number(weeks[i - 1][0].key.slice(5, 7));
+    return m !== prev ? m : null;
+  });
+  const levelOf = (count: number) => (count >= 4 ? 4 : count);
+  const LEVEL_BG = ["rgba(128,128,128,0.18)", "rgba(29,155,240,0.35)", "rgba(29,155,240,0.55)", "rgba(29,155,240,0.8)", "rgba(29,155,240,1)"];
+  const totalResets = HISTORY.length;
+  const busiest = [...eventsByDay.entries()].sort((a, b) => b[1].length - a[1].length)[0];
+
   const selectedEvents = (eventsByDay.get(selected) ?? []).slice().sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
   const sortedHistory = HISTORY.slice().sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
 
   return (
     <section className="p-4">
       <h2 className="text-base font-extrabold">重置日历</h2>
-      <p className="mt-1 text-xs text-[var(--muted)]">格子里的厂商图标表示那家在那一天进行过额度重置，点击日期查看当天详情。所有时间统一为北京时间 UTC+8。</p>
+      <p className="mt-1 text-xs text-[var(--muted)]">仿 GitHub 贡献图的热力日历：每格是一天，颜色越深表示御三家当天重置次数越多。点击格子查看当天详情。所有时间统一为北京时间 UTC+8。</p>
 
       <div className="mt-4 rounded-2xl border border-[var(--line)] p-3">
-        <div className="mb-2 flex items-center justify-between">
-          <button onClick={() => moveMonth(-1)} aria-label="上个月" className="rounded-full border border-[var(--line)] bg-[var(--surface-2)] p-2 transition hover:bg-[var(--hover)]"><ChevronLeft size={16} /></button>
-          <strong className="text-sm">{cursor.y} 年 {cursor.m + 1} 月</strong>
-          <button onClick={() => moveMonth(1)} aria-label="下个月" className="rounded-full border border-[var(--line)] bg-[var(--surface-2)] p-2 transition hover:bg-[var(--hover)]"><ChevronRight size={16} /></button>
-        </div>
-        <div className="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-[var(--text)] opacity-70">
-          {["一", "二", "三", "四", "五", "六", "日"].map((w) => <div key={w} className="py-1">{w}</div>)}
-        </div>
-        <div className="grid grid-cols-7 gap-1">
-          {cells.map((day, i) => {
-            if (day === null) return <div key={`blank-${i}`} />;
-            const key = dayKey(day);
-            const providers = [...new Set((eventsByDay.get(key) ?? []).map((e) => e.provider))];
-            const isSelected = key === selected;
-            const isToday = key === todayKey;
-            return (
-              <button key={key} onClick={() => setSelected(key)} className={`flex min-h-[60px] flex-col items-center rounded-xl px-0.5 py-1.5 transition hover:bg-[var(--hover)] ${isSelected ? "bg-blue-500/10 ring-1 ring-[#1d9bf0]" : ""}`}>
-                <span className={`text-xs font-semibold ${isToday ? "grid h-5 min-w-5 place-items-center rounded-full bg-[#1d9bf0] px-1 text-white" : ""}`}>{day}</span>
-                <span className="mt-1.5 flex h-[18px] items-center gap-1">{providers.map((p) => <ProviderMark key={p} provider={p} medium />)}</span>
-              </button>
-            );
-          })}
+        <div className="overflow-x-auto">
+          <div className="min-w-[540px]">
+            <div className="ml-7 flex gap-[3px]">
+              {monthLabels.map((m, i) => <div key={i} className="w-[13px] shrink-0 text-[10px] leading-4 text-[var(--muted)]">{m ? `${m}月` : ""}</div>)}
+            </div>
+            <div className="flex gap-2">
+              <div className="grid shrink-0 grid-rows-7 gap-[3px] text-[9px] leading-[13px] text-[var(--muted)]" style={{ gridTemplateRows: "repeat(7, 13px)" }}>
+                {["一", "", "三", "", "五", "", "日"].map((w, i) => <div key={i} className="flex w-5 items-center">{w}</div>)}
+              </div>
+              <div className="grid gap-[3px]" style={{ gridTemplateRows: "repeat(7, 13px)", gridAutoFlow: "column", gridAutoColumns: "13px" }}>
+                {weeks.flatMap((col) => col.map((cell) => {
+                  const events = eventsByDay.get(cell.key) ?? [];
+                  const count = events.length;
+                  const providers = [...new Set(events.map((e) => e.provider))];
+                  const isSelected = cell.key === selected;
+                  const isToday = cell.key === todayKey;
+                  const tip = count ? `${cell.key} · ${count} 次重置（${providers.map((pr) => PROVIDERS[pr].name).join("、")}）` : `${cell.key} · 无重置`;
+                  return (
+                    <button key={cell.key} title={tip} aria-label={tip} disabled={cell.future} onClick={() => setSelected(cell.key)}
+                      className={`h-[13px] w-[13px] rounded-[3px] transition ${cell.future ? "opacity-30" : "hover:ring-1 hover:ring-[var(--muted)]"} ${isSelected ? "ring-2 ring-[#1d9bf0]" : ""} ${isToday ? "ring-1 ring-[var(--text)]" : ""}`}
+                      style={{ backgroundColor: LEVEL_BG[levelOf(count)] }} />
+                  );
+                }))}
+              </div>
+            </div>
+            <div className="mt-2 flex items-center justify-between">
+              <span className="text-[10px] text-[var(--muted)]">{`近 ${WEEKS} 周共 ${totalResets} 次重置${busiest ? ` · 最多的一天 ${busiest[0]}（${busiest[1].length} 次）` : ""}`}</span>
+              <span className="flex items-center gap-1 text-[10px] text-[var(--muted)]">少 {LEVEL_BG.map((bg, i) => <span key={i} className="inline-block h-[10px] w-[10px] rounded-[2px]" style={{ backgroundColor: bg }} />)} 多</span>
+            </div>
+          </div>
         </div>
       </div>
 
