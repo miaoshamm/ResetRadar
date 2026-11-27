@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/logo.svg" alt="ResetRadar 标志" width="96" height="96" />
+  <img src="public/logo.png" alt="ResetRadar 标志" width="96" height="96" />
 </p>
 
 # ResetRadar
@@ -25,4 +25,4 @@
 
 ---
 
-厂商图标与 Logo 中的品牌图形来自 [Lobe Icons](https://github.com/lobehub/lobe-icons)（MIT）。
+站内厂商图标来自 [Lobe Icons](https://github.com/lobehub/lobe-icons)（MIT）；项目 Logo 为「御三家 · 三个火枪手」主题图：Codex、Claude Code 与 Gemini 化身三位佩剑火枪手。

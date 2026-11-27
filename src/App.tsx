@@ -394,7 +394,7 @@ export default function ResetRadar() {
         <aside className="sticky top-0 hidden h-screen w-[76px] shrink-0 flex-col justify-between border-r border-[var(--line)] px-2 py-4 sm:flex xl:w-[250px] xl:px-4">
           <div>
             <div className="mb-7 flex items-center gap-3 px-3">
-              <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="ResetRadar 标志" className="h-9 w-9 shrink-0 rounded-[10px]" />
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="ResetRadar 标志" className="h-9 w-9 shrink-0 rounded-[10px]" />
               <div className="hidden xl:block"><div className="text-lg font-black tracking-tight">ResetRadar</div><div className="text-[11px] text-[var(--muted)]">御三家额度追踪</div></div>
             </div>
             <nav className="space-y-1">
