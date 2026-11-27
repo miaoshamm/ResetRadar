@@ -534,7 +534,6 @@ function HistoryView() {
   }
   const levelOf = (count: number) => (count >= 4 ? 4 : count);
   const LEVEL_BG = ["rgba(128,128,128,0.22)", "rgba(29,155,240,0.4)", "rgba(29,155,240,0.65)", "rgba(29,155,240,0.85)", "rgba(29,155,240,1)"];
-  const NO_DATA_BG = "rgba(128,128,128,0.07)";
   const totalResets = HISTORY.length;
   const busiest = [...eventsByDay.entries()].sort((a, b) => b[1].length - a[1].length)[0];
 
@@ -551,9 +550,9 @@ function HistoryView() {
         ? `${cellDay.key} · ${count} 次重置（${providers.map((pr) => PROVIDERS[pr].name).join("、")}）`
         : `${cellDay.key} · 无重置`;
     return (
-      <button key={cellDay.key} title={tip} aria-label={tip} disabled={cellDay.future || noData} onClick={() => setSelected(cellDay.key)}
-        className={`${className} ${cellDay.future ? "opacity-30" : noData ? "cursor-default" : "hover:ring-1 hover:ring-[var(--muted)] active:scale-95"} ${isSelected ? "ring-2 ring-[#1d9bf0]" : ""} ${isToday && !isSelected ? "ring-1 ring-[var(--muted)]" : ""}`}
-        style={{ ...style, backgroundColor: noData ? NO_DATA_BG : LEVEL_BG[levelOf(count)] }} />
+      <button key={cellDay.key} title={tip} aria-label={tip} disabled={cellDay.future} onClick={() => setSelected(cellDay.key)}
+        className={`${className} ${cellDay.future ? "opacity-30" : "hover:ring-1 hover:ring-[var(--muted)] active:scale-95"} ${isSelected ? "ring-2 ring-[#1d9bf0]" : ""} ${isToday && !isSelected ? "ring-1 ring-[var(--muted)]" : ""}`}
+        style={{ ...style, backgroundColor: LEVEL_BG[levelOf(count)] }} />
     );
   };
 
@@ -609,7 +608,7 @@ function HistoryView() {
               </div>
             ))}
           </div>
-        ) : <div className="mt-2 flex flex-col items-center gap-2 rounded-2xl border border-dashed border-[var(--line)] py-4 text-center"><CalendarDays size={20} className="text-[var(--muted)]" /><p className="text-xs text-[var(--muted)]">这一天没有重置记录</p></div>}
+        ) : <div className="mt-2 flex flex-col items-center gap-2 rounded-2xl border border-dashed border-[var(--line)] py-4 text-center"><CalendarDays size={20} className="text-[var(--muted)]" /><p className="text-xs text-[var(--muted)]">{selected < firstDataKey ? `这一天尚未收录（本站自 ${firstDataKey} 起记录）` : "这一天没有重置记录"}</p></div>}
       </div>
 
       <h3 className="mt-6 text-sm font-extrabold">全部重置历史</h3>
