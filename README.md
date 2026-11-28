@@ -4,7 +4,7 @@
 
 # ResetRadar
 
-**御三家 AI 额度重置追踪站** —— 盯着 OpenAI、Google、Anthropic 三家的订阅额度什么时候重置，不用再自己满世界刷消息。
+**ChatGPT、Claude、Gemini 额度重置追踪站** —— 盯着 ChatGPT（Codex）、Claude、Gemini（Antigravity）的订阅额度什么时候重置，不用再自己满世界刷消息。
 
 在线访问：https://resetradar.aikio.blog
 
