@@ -1952,6 +1952,27 @@
   "bookmarked": false
  },
  {
+  "id": "sundarpichai-one-more-pie-20261126",
+  "provider": "google",
+  "providerLabel": "Gemini / Antigravity",
+  "category": "person",
+  "author": "Sundar Pichai",
+  "handle": "@sundarpichai",
+  "role": "Google CEO",
+  "avatarUrl": "https://pbs.twimg.com/profile_images/2051799620062429184/AL8CoAUG_200x200.jpg",
+  "publishedAt": "2026-11-26T12:00:00+08:00",
+  "summary": "分享感恩节 3D 叠甜点小游戏 One More Pie，用 Playground 纯提示词生成，并晒出自己的最高分邀网友挑战。",
+  "originalText": "If your Thanksgiving tradition involves seeing how much dessert you can balance on one plate, this one's for you:) One More Pie is a 3D stacker game prompted into existence using @tryplayground, our experimental platform that lets you build web games with a few simple text prompts! My high score is up (Planetarycode159), let's see if anyone can beat it, happy thanksgiving!",
+  "likes": 1200,
+  "reposts": 83,
+  "sourceVerified": true,
+  "sourceNote": "",
+  "liked": false,
+  "reposted": false,
+  "bookmarked": false,
+  "sourceUrl": "https://finchview.com/sundarpichai"
+ },
+ {
   "id": "tibo-billing-mistake-banked-reset-20261126",
   "provider": "openai",
   "providerLabel": "ChatGPT / Codex",
@@ -2389,26 +2410,5 @@
   "liked": false,
   "reposted": false,
   "bookmarked": false
- },
- {
-  "id": "logan-neon-usage-20261125",
-  "provider": "google",
-  "providerLabel": "Gemini / Antigravity",
-  "category": "person",
-  "author": "Logan Kilpatrick",
-  "handle": "@OfficialLoganK",
-  "role": "Gemini 产品负责人",
-  "avatarUrl": "https://pbs.twimg.com/profile_images/1943787288955084800/QOl7OJMc_200x200.jpg",
-  "publishedAt": "2026-11-25T11:00:00+08:00",
-  "summary": "Logan 晒 Neon 用量曲线：上线一周使用量持续飙升。",
-  "originalText": "Neon usage is 📈📈📈",
-  "likes": 9300,
-  "reposts": 153,
-  "sourceVerified": true,
-  "sourceNote": "",
-  "liked": false,
-  "reposted": false,
-  "bookmarked": false,
-  "sourceUrl": "https://finchview.com/OfficialLoganK"
  }
 ]
